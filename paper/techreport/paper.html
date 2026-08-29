@@ -1,173 +1,23 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
+  <meta name="generator" content="pandoc 3.10.2" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Jeanet Sinding Bentzen" />
   <meta name="author" content="Alessandro Pizzigolotto" />
   <title>How Many US Nonprofits Are Religious? Measuring a Population Share from Mission Text with LLM Weak Supervision and Prediction-Powered Inference</title>
   <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    div.abstract {
-      margin: 2em 2em 2em 2em;
-      text-align: left;
-      font-size: 85%;
-    }
-    div.abstract-title {
-      font-weight: bold;
-      text-align: center;
-      padding: 0;
-      margin-bottom: 0.5em;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      background-color: #1a1a1a;
-      border: none;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     /* The extra [class] is a hack that increases specificity enough to
        override a similar rule in reveal.js */
@@ -183,7 +33,6 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
-      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -200,6 +49,7 @@
     div.csl-indent {
       margin-left: 2em;
     }  </style>
+  <link rel="stylesheet" href="paper.css" />
 </head>
 <body>
 <header id="title-block-header">
@@ -283,7 +133,7 @@ as the current state of the art allows, we measure its error against
 human labels out of sample, and we then correct the population count
 using Prediction-Powered Inference (PPI++) <span class="citation"
 data-cites="angelopoulos2023ppi">(<a href="#ref-angelopoulos2023ppi"
-role="doc-biblioref">Angelopoulos, Duchi, and Zrnic 2023</a>)</span>, a
+role="doc-biblioref">Angelopoulos et al. 2023</a>)</span>, a
 design-based estimator that uses a human-labeled probability subsample
 to remove the classifier’s bias while retaining its statistical power.
 PPI++ has survey-sampling roots — it is a difference estimator — so it
@@ -299,20 +149,20 @@ transfers to any binary descriptive-share question over a text corpus.
 Second, we apply it to a substantive question and report the answer:
 religious mission prevalence among US nonprofits is 14.4% (95% CI
 12.7–16.1% conditional on the low-tier rule; 11.5–18.4% once that rule’s
-uncertainty is propagated, §7), concentrated overwhelmingly in NTEE
-group X (82%) but with a non-trivial tail across human-services,
-international-affairs, and community-improvement organizations. Third,
-and in the spirit of “validate, validate, validate” <span
-class="citation" data-cites="grimmerstewart2013">(<a
-href="#ref-grimmerstewart2013" role="doc-biblioref">Grimmer and Stewart
-2013</a>)</span>, we conduct an evidence-first internal audit: we report
-the classifier’s error at the true base rate rather than on the enriched
-evaluation set, we cross-check the prevalence estimate with a second
-quantifier, and we are explicit about the places where our evidence is
-thin. The paper is deliberately structured so that the substantive
-answer and its uncertainty live in the main text, while every
-implementation decision, threshold, and figure is documented in the
-appendices.</p>
+uncertainty is propagated, §7), and a substantial share of the
+organizations it identifies sit outside the officially religious NTEE
+category, in human services, education, community improvement, and
+international affairs (§7). Third, and in the spirit of “validate,
+validate, validate” <span class="citation"
+data-cites="grimmerstewart2013">(<a href="#ref-grimmerstewart2013"
+role="doc-biblioref">Grimmer and Stewart 2013</a>)</span>, we conduct an
+evidence-first internal audit: we report the classifier’s error at the
+true base rate rather than on the enriched evaluation set, we
+cross-check the prevalence estimate with a second quantifier, and we are
+explicit about the places where our evidence is thin. The paper is
+deliberately structured so that the substantive answer and its
+uncertainty live in the main text, while every implementation decision,
+threshold, and figure is documented in the appendices.</p>
 <p><strong>Is the prediction “powerful”?</strong> We answer this
 squarely in Section 6 and preview it here, because it is the question a
 skeptical reader asks first. On the frozen test the classifier
@@ -438,7 +288,7 @@ and — for one frozen slice — final evaluation (Section 6). The gold is
 <em>never</em> in the training pool.</p></li>
 <li><p><strong>A fine-tuned encoder.</strong> We fine-tune a DeBERTa-v3
 encoder <span class="citation" data-cites="he2021deberta">(<a
-href="#ref-he2021deberta" role="doc-biblioref">He, Gao, and Chen
+href="#ref-he2021deberta" role="doc-biblioref">He et al.
 2021</a>)</span> on the silver labels (Section 5). We deliberately do
 <em>not</em> use the LLM ensemble itself as the production classifier:
 on taxonomic labeling tasks, fine-tuned encoders remain competitive with
@@ -492,10 +342,10 @@ v3) and aggregated by majority vote across the three, trading a single
 point estimate for the noise-averaging of a three-vote ensemble. The
 choice of an open-weight model served locally via vLLM <span
 class="citation" data-cites="kwon2023vllm">(<a href="#ref-kwon2023vllm"
-role="doc-biblioref">Kwon et al. 2023</a>)</span>, rather than a closed
-API model, was deliberate: it makes the labeling step reproducible and
-cost-controlled, and the bake-off showed it to be the single best
-annotator.</p>
+role="doc-biblioref"><span class="nocase">Kwon et al.</span>
+2023</a>)</span>, rather than a closed API model, was deliberate: it
+makes the labeling step reproducible and cost-controlled, and the
+bake-off showed it to be the single best annotator.</p>
 <p><strong>Freezing the silver labels.</strong> The full 20,000-record
 pool is annotated and aggregated by majority vote, then QC-gated against
 the human-coded <code>validation</code> split before any label is
@@ -516,25 +366,25 @@ classify-and-count and must de-bias.</p>
 <h1 id="the-classifier">5. The Classifier</h1>
 <p><strong>Architecture and arms.</strong> We fine-tune DeBERTa-v3-base
 <span class="citation" data-cites="he2021deberta">(<a
-href="#ref-he2021deberta" role="doc-biblioref">He, Gao, and Chen
+href="#ref-he2021deberta" role="doc-biblioref">He et al.
 2021</a>)</span> as the primary encoder, chosen for the
 disentangled-attention design that gave it state-of-the-art
 classification performance at release, and we benchmark it against
 ModernBERT-base <span class="citation"
 data-cites="warner2024modernbert">(<a href="#ref-warner2024modernbert"
-role="doc-biblioref">Warner et al. 2024</a>)</span> and TF-IDF / MiniLM
-logistic-regression baselines <span class="citation"
-data-cites="reimers2019sbert">(<a href="#ref-reimers2019sbert"
-role="doc-biblioref">Reimers and Gurevych 2019</a>)</span>. Training
-minimizes a soft cross-entropy on the ensemble vote-shares rather than
-hard 0/1 labels. Soft targets are the default because they carry
-annotator-confidence information and are inherently more robust to label
-noise than hard thresholds, which makes techniques like label smoothing
-redundant and down-weights exactly the disagreement-band rows that a
-confident-learning prune <span class="citation"
-data-cites="northcutt2021confident">(<a
-href="#ref-northcutt2021confident" role="doc-biblioref">Northcutt,
-Jiang, and Chuang 2021</a>)</span> would drop.</p>
+role="doc-biblioref"><span class="nocase">Warner et al.</span>
+2024</a>)</span> and TF-IDF / MiniLM logistic-regression baselines <span
+class="citation" data-cites="reimers2019sbert">(<a
+href="#ref-reimers2019sbert" role="doc-biblioref">Reimers and Gurevych
+2019</a>)</span>. Training minimizes a soft cross-entropy on the
+ensemble vote-shares rather than hard 0/1 labels. Soft targets are the
+default because they carry annotator-confidence information and are
+inherently more robust to label noise than hard thresholds, which makes
+techniques like label smoothing redundant and down-weights exactly the
+disagreement-band rows that a confident-learning prune <span
+class="citation" data-cites="northcutt2021confident">(<a
+href="#ref-northcutt2021confident" role="doc-biblioref">Northcutt et al.
+2021</a>)</span> would drop.</p>
 <p><strong>Selection.</strong> We run a selection sweep over encoder x
 training-arm cells across three seeds (42–44), then refit the winner
 across five seeds (42–46) for honest variance reporting. Selection is on
@@ -550,7 +400,7 @@ incumbent when it falls within the larger of the two arms’ across-seed
 standard deviations. On our sweep (Appendix C, Table C2) this chain runs
 <code>hard</code> (mean PR-AUC 0.958 ± 0.006) →
 <code>class_weighted</code> (0.953, gap 0.005 &lt; SD) → soft
-<code>default</code> (0.941 ± 0.012, gap 0.012 ≤ SD), landing on the
+<code>default</code> (0.941 ± 0.012, gap 0.012 &lt;= SD), landing on the
 soft <code>default</code> DeBERTa arm (minority-F1 0.835, seed 44).
 <strong>We flag this as the sharpest weak spot in our selection and
 state it plainly:</strong> the transitivity of the chain matters,
@@ -714,16 +564,16 @@ as diagnostics, not claims. We do not over-read subgroup numbers on a
 Population Prevalence via Prediction-Powered Inference</h1>
 <p><strong>Estimator.</strong> For the HIGH+MEDIUM frame we use PPI++
 <span class="citation" data-cites="angelopoulos2023ppi">(<a
-href="#ref-angelopoulos2023ppi" role="doc-biblioref">Angelopoulos,
-Duchi, and Zrnic 2023</a>)</span>. Intuitively, PPI++ starts from the
-classifier’s mean prediction over the entire unlabeled corpus (a
-low-variance but biased quantity) and subtracts a bias-correction term
-equal to the classifier’s mean error on the human-coded anchor sample
-(an unbiased but higher-variance quantity). The result is asymptotically
-unbiased <em>regardless of whether the classifier is correct</em>, with
-valid confidence intervals, and is never less efficient than using the
-anchor labels alone. Anchor rows carry Horvitz–Thompson design weights
-<span class="citation" data-cites="horvitzthompson1952">(<a
+href="#ref-angelopoulos2023ppi" role="doc-biblioref">Angelopoulos et al.
+2023</a>)</span>. Intuitively, PPI++ starts from the classifier’s mean
+prediction over the entire unlabeled corpus (a low-variance but biased
+quantity) and subtracts a bias-correction term equal to the classifier’s
+mean error on the human-coded anchor sample (an unbiased but
+higher-variance quantity). The result is asymptotically unbiased
+<em>regardless of whether the classifier is correct</em>, with valid
+confidence intervals, and is never less efficient than using the anchor
+labels alone. Anchor rows carry Horvitz–Thompson design weights <span
+class="citation" data-cites="horvitzthompson1952">(<a
 href="#ref-horvitzthompson1952" role="doc-biblioref">Horvitz and
 Thompson 1952</a>)</span> derived from their recorded inclusion
 probabilities, so the correction targets the population rather than the
@@ -806,38 +656,74 @@ defensible full-population statement should use the wider envelope; a
 reader focused on the text-rich frame should use the HIGH+MEDIUM
 number.</p>
 <p><strong>Face validity by sector.</strong> The per-NTEE prevalence
-forest (Figure B7, Appendix C Table C4) is a strong sanity check.
-Religious prevalence is overwhelmingly concentrated in NTEE group X,
-Religion-related, at <strong>82.2% (95% CI 77.3–87.2%)</strong>, with a
-secondary presence in Human Services (P, 19.4%), International/Foreign
-Affairs (Q, 17.4%, wide CI), Crime/Legal (I, 12.3%), and Community
-Improvement (S, 11.6%), and near-zero prevalence in Environment and
-Animal-related sectors (C, D <span
+forest (Figure B7, Appendix C Table C4) is a strong sanity check, and it
+answers two different questions that are easy to conflate. The first is
+<em>within-group</em> prevalence: 82.2% of the organizations in NTEE
+group X, Religion-related, have a religious mission (95% CI 77.3–87.2%),
+against a secondary presence in Human Services (P, 19.4%),
+International/Foreign Affairs (Q, 17.4%, wide CI), Crime/Legal (I,
+12.3%), and Community Improvement (S, 11.6%), and near-zero prevalence
+in Environment and Animal-related sectors (C, D <span
 class="math inline"> &lt; 0.1%</span>). Nine of 27 groups are suppressed
 for having fewer than ten anchor rows; their fallback point estimates
-are unstable and we label them not-estimated rather than report them. A
-battery of vocabulary diagnostics on the silver text (Figure B11 and
-Figures B15–B19) confirms the model separates on face-valid religious
-language rather than artifacts. The distinctively religious terms are
-theological and denominational (<em>christian, jesus christ, the gospel,
-faith based, word of god</em>, plus <em>jewish</em> and
-<em>catholic</em>), while the secular pole is civic, scientific, and
-service vocabulary (<em>public, research, county, low income, quality of
-life</em>). Tellingly, the two classes share a large generic-nonprofit
-vocabulary (<em>community, education, health, children</em>), so raw
-word frequencies barely separate them (Figure B19); it is the
+are unstable and we label them not-estimated rather than report them.
+The second question, and the substantively interesting one, is
+<em>composition</em>: of the organizations in the 501C3-charity mission
+frame that carry a religious mission, the design-weighted share filed
+under group X is <strong>50.6% (95% CI 37.2–62.6%)</strong> — so between
+roughly a third and two-thirds of religious-mission organizations sit
+outside the administratively religious category, in Human Services (P,
+22.5%), Education (B, 7.9%), Community Improvement (S, 3.8%),
+Philanthropy (T, 3.3%), International/Foreign Affairs (Q, 3.0%), and
+Health (E, 2.0%). This is the per-organization estimand of §2 applied to
+a composition rather than a share, and it is estimated <em>directly</em>
+from the 59 religious rows among the 500 anchor codings, using
+Horvitz–Thompson design weights over the full frame and a 2,000-resample
+percentile bootstrap. Reweighting the per-group prevalences of Table C4
+by corpus group size corroborates it at 50.0%, but that route is a
+<em>different</em> frame — it covers only the 93.3% of organizations
+falling in non-suppressed groups, and it aggregates group-level
+composites whose sum is not the quantity PPI targets (§8) — so we report
+the anchor-based estimate as the number and the reweighting as a check
+on it. The composition figure is the point §1 anticipated: because
+faith-based hospitals, schools, and relief agencies are routinely filed
+under Health, Education, or International rather than under X, the
+administrative category is a lower bound on religious organizational
+presence, and our own data put a magnitude on the gap. A battery of
+vocabulary diagnostics on the silver text (Figure B11 and Figures
+B15–B19) confirms the model separates on face-valid religious language
+rather than artifacts. The distinctively religious terms are theological
+and denominational (<em>christian, jesus christ, the gospel, faith
+based, word of god</em>, plus <em>jewish</em> and <em>catholic</em>),
+while the secular pole is civic, scientific, and service vocabulary
+(<em>public, research, county, low income, quality of life</em>).
+Tellingly, the two classes share a large generic-nonprofit vocabulary
+(<em>community, education, health, children</em>), so raw word
+frequencies barely separate them (Figure B19); it is the
 distinctiveness-weighted view — Fightin’ Words log-odds z-scores in the
-sense of <span class="citation" data-cites="monroe2008fightin">Monroe,
-Colaresi, and Quinn (<a href="#ref-monroe2008fightin"
+sense of <span class="citation" data-cites="monroe2008fightin">Monroe et
+al. (<a href="#ref-monroe2008fightin"
 role="doc-biblioref">2008</a>)</span> (Figures B15–B18) — that exposes
 the clean religious/secular axis. That contrast is a useful caution for
 text-as-data measurement generally: the signal the classifier exploits
-is real but invisible to a naive word count.</p>
+is real but invisible to a naive word count. Repeating the diagnostic on
+the full prediction corpus (Figures B20–B24) sharpens the check into a
+convergent-validity argument: the silver-pool panels split 20,000
+missions by LLM ensemble vote, the population panels split 560,354
+organizations by the encoder’s own label, and the two independently
+derived label sources recover the same lexical axis — the same religious
+pole, and <em>public</em> leading the secular pole in both. That
+agreement is evidence about the instrument rather than about nonprofits,
+since the population labels are the model’s own output; but it is the
+kind of evidence the circularity concern of §8 calls for, and it does
+not depend on the recall-first operating threshold, surviving a max-F1
+split, a base-rate split, and the removal of every uncertain row (Figure
+B24).</p>
 <p><strong>Cross-checks and one disagreement we do not hide.</strong> We
 cross-check PPI++ with expectation- maximization quantification
 (EMQ/SLD) <span class="citation" data-cites="saerens2002">(<a
-href="#ref-saerens2002" role="doc-biblioref">Saerens, Latinne, and
-Decaestecker 2002</a>)</span>. On the HIGH+MEDIUM frame EMQ returns
+href="#ref-saerens2002" role="doc-biblioref">Saerens et al.
+2002</a>)</span>. On the HIGH+MEDIUM frame EMQ returns
 <strong>16.7%</strong>, which sits <em>above</em> the PPI++ upper
 confidence bound of 15.4% (Figure B9). This is a ~3-percentage-point
 disagreement between two reasonable quantifiers, and an evidence-first
@@ -888,8 +774,21 @@ richer multi-label codebook, so future sensitivity analyses on ambiguous
 <p><strong>Prevalence estimation.</strong> The EMQ cross-check (16.7%)
 exceeds the PPI++ interval (§7). The LOW-tier rule sensitivity is
 estimated on 13 positives, producing the wide composite band. Per-NTEE
-small-cell estimates are diagnostics, not publishable subgroup
-claims.</p>
+small-cell estimates are diagnostics, not publishable subgroup claims,
+and the aggregation gap makes the point concretely: across the
+non-suppressed NTEE groups the raw classifier counts about
+<strong>75,700 predicted positives</strong>, while the per-group
+PPI/Rogan–Gladen composites sum to about <strong>67,000</strong> —
+roughly 11% below the raw count — whereas globally PPI++ sits slightly
+<em>above</em> the raw count, so the per-group and global estimators
+disagree in direction and not merely in magnitude. That is expected
+rather than alarming: each group composite rests on 10–73 anchor rows
+and applies the globally estimated rule correction to a tiny group-level
+LOW cell, and a sum of separately estimated subgroup means carries no
+guarantee of reproducing the global mean, because that sum is not the
+estimand PPI targets. It is also why the group-X composition figure in
+§7 is estimated directly from the anchor rows rather than by reweighting
+the per-group prevalences of Table C4.</p>
 <p><strong>Modeling choices.</strong> The parsimony tie-rule selected
 the soft <code>default</code> DeBERTa arm over the higher-point-estimate
 <code>hard</code> arm (§5). The encoder grid was pruned to two
@@ -908,12 +807,37 @@ reporting lexicon-hit versus lexicon-miss test slices separately.
 Relatedly, identical mission texts inherit a single classification
 rather than being scored independently, and the label measures text, not
 verified organizational identity (§2). Finally, the vocabulary
-diagnostics (Figure B19) surface two cosmetic preprocessing residues —
-an HTML non-breaking-space token (<em>nbsp</em>) and IRS/501(c) filing
-boilerplate (<em>internal revenue code</em>, <em>section 501</em>)
-appearing among high-frequency n-grams; these do not affect the
-classifier or any reported estimate, but should be stripped before the
-diagnostic figures are released.</p>
+diagnostics surfaced a genuine preprocessing defect, which we quantify
+rather than wave away. An HTML non-breaking-space token (<em>nbsp</em>)
+survives into the model input: the pipeline performs no HTML unescaping
+at any stage, so the token is present in the strings the encoder
+tokenizes. It appears in <strong>745 of the 560,354
+organizations</strong> in the 501C3-charity mission frame (0.13%), and
+those 745 are predicted religious at <strong>38.7% against 14.1%
+corpus-wide</strong> — a 2.7x enrichment, so the token is not neutral
+with respect to the label. Before we filtered it, it scored z=87.9 in
+the population keyness diagnostic, fourth on the religious side and
+above <em>christian</em>, an artifact of concentration rather than
+breadth: roughly 26 occurrences per document across only 744 documents.
+The bound on the damage is nevertheless small and we state it exactly:
+even if <em>every one</em> of the 745 affected organizations were
+misclassified because of the token, the effect on the reported
+prevalence is at most <strong>0.13 percentage points</strong>, an order
+of magnitude inside the composite interval. We strip the token from the
+diagnostic figures at the visualization stage, so the figures reproduced
+in Appendix B are clean, but we did not fix it upstream, and the reason
+is proportionality rather than convenience: changing the text cleaner
+changes the model input, which forces a retrain, a full re-inference
+over the corpus, a prevalence re-run, and a reopen of the frozen test
+under the controlled unlock procedure — a disproportionate cost for a
+0.13% defect with a bounded, sub-0.2-point effect. It is logged as a
+known defect to be cleared at the next full re-run, and no reported
+estimate in this paper depends on it. IRS and 501(c) filing boilerplate
+(<em>internal</em>, <em>revenue</em>, <em>code</em>, <em>section</em>,
+<em>501</em>) is a different matter and not a defect: we remove those
+tokens from the language diagnostics as a deliberate analyst choice
+about what a keyness figure should display, and the model input sees
+them unchanged.</p>
 <p><strong>Reproducibility and infrastructure.</strong> Heavy artifacts
 are versioned by cloud symlinks standing in for DVC; GPU stages are
 coupled to a specific HPC platform. The run manifest for this build was
@@ -948,6 +872,79 @@ prevalence question over text. The immediate next steps that would most
 strengthen the estimate are a larger frozen test, a lexicon-hit /
 lexicon-miss decomposition to close the circularity gap, and a larger
 LOW-tier anchor to tighten the full-population bound.</p>
+<p><strong>An extension we have built but are not reporting: the names
+arm.</strong> One line of work sits deliberately outside the results
+above. The <em>names arm</em> applies the mission-trained checkpoint to
+a different text field of the same organization — its registered name —
+with no target-field adaptation and no change to the label space. We
+call this <strong>cross-field transfer</strong> rather than zero-shot:
+the model was task-trained, and only the field it reads has moved. The
+reason it is worth building is coverage. The estimand of §2 is defined
+over <code>EIN2</code> organizations in the 501C3-charity mission frame
+— the 560,354 organizations that carry a mission-statement record. A
+name, by contrast, exists for every organization: the unified BMF
+registry carries 3.44 million <code>EIN2</code> organizations against
+the 1.54 million of the upstream panel frame, and within the panel there
+is a name-only stratum of organizations that have a name but no mission
+text at all. A working names classifier would let the measurement speak
+to those universes, which is precisely the boundary the mission-based
+estimand cannot cross.</p>
+<p><strong>The construct decision, and why it was the hard
+call.</strong> Before any labelling could be designed we had to settle
+what a positive label <em>means</em> for a name, and we fixed it the
+conservative way: the names arm uses the same construct as the missions
+pipeline, unchanged. A positive means observable religious purpose,
+tradition, or motivation as a core driver of the organization’s work —
+not religious identity, heritage, or auspice. The consequences are
+deliberately uncomfortable, and all hand coding for the names arm is
+performed under this rubric rather than a name-native one: “St Mary’s
+Hospital” is a true <em>negative</em>, because a saint name is not a
+purpose; “Trinity Health” is a true <em>negative</em>, faith-founded
+identity without stated purpose; “First Baptist Church” is a true
+positive, because it names a tradition that is the work. The alternative
+— a new auspice or affiliation construct, more natural for the input and
+certain to score better — was rejected because it would measure a
+<em>different target</em>: the two arms could not then be pooled,
+compared, or reported as one prevalence figure without equivocation.
+Holding the construct fixed keeps the arms commensurable at the cost of
+a recall ceiling imposed by construction, and it sharpens the
+falsifiable claim the arm exists to test: that an encoder beats a
+keyword lexicon on <em>precision</em>, by rejecting the saint-named
+seculars a lexicon fires on.</p>
+<p><strong>The tension we cannot design away.</strong> That decision
+leaves the construct and the available evidence systematically
+misaligned, and it is worth naming plainly rather than treating as an
+implementation detail. Names carry identity and affiliation —
+denominational tokens, saint names, tradition words — while the
+construct asks about purpose. The distinction is not ours; it is the
+Sider and Unruh typology of religious characteristics in service
+organizations <span class="citation" data-cites="siderunruh2004">(<a
+href="#ref-siderunruh2004" role="doc-biblioref">Sider and Unruh
+2004</a>)</span>, and it means that much of what looks like transfer
+failure is the model correctly agreeing with a demanding construct. The
+model also already violates the rule in the other direction: “Saint Luke
+Academy” receives a very high score even though a saint’s name alone is
+insufficient under the purpose construct, so the classifier is in places
+detecting religious identity rather than religious purpose. This is not
+a bug we expect to tune away. It is the predictable consequence of
+asking a name to supply evidence about work.</p>
+<p><strong>Status, stated plainly.</strong> Provisional validation on a
+deliberately enriched sample of hand-coded names drawn from the BMF-only
+population supports the model as a screening and ranking aid: it
+recognizes explicit religious institutions and tradition words. It does
+not support treating the score as a calibrated probability, choosing a
+production threshold, or reporting a population prevalence figure — and
+the preregistered precision advantage over a strong-tradition lexicon is
+not yet demonstrated in the paired comparison we ran. Because the
+enrichment was intentional, the observed error rates are not population
+error rates and we decline to print them as if they were. That last
+point is why the names arm stays out of this paper’s results: an arm
+that cannot yet defend a threshold cannot defend a prevalence estimate,
+and the discipline of §7 applies to it as much as to the mission frame.
+What would promote it is a human-coded probability sample from a named
+<code>EIN2</code> universe, coded under the purpose rubric and large
+enough to support a threshold choice and a de-biasing correction of its
+own.</p>
 <h1 id="appendix-a.-reproducibility-and-artifact-map">Appendix A.
 Reproducibility and Artifact Map</h1>
 <p>Every headline number in this paper is backed by a committed
@@ -990,7 +987,7 @@ Figure-by-Figure Reference</h1>
 <code>data/processed/figures/</code>. Numbers below are read from the
 rendered figures and cross-checked against the source JSON.</p>
 <p><img
-src="../data/processed/figures/precision_recall_curve.svg" /></p>
+src="../../data/processed/figures/precision_recall_curve.svg" /></p>
 <p><strong>Figure B1 — <code>precision_recall_curve</code>.</strong> PR
 curve (main) with inset ROC. The PR curve holds a 0.90–0.94 precision
 plateau across recall 0.2–0.9 before collapsing near recall 1.0; the
@@ -998,7 +995,8 @@ three candidate thresholds (operating, base-rate, max-F1) cluster on the
 high-recall shoulder. Inset ROC hugs the top-left corner.
 <em>Reads:</em> PR-AUC 0.901, ROC-AUC 0.949. <em>Conclusion:</em> strong
 ranking with a stable high-precision operating region.</p>
-<p><img src="../data/processed/figures/reliability_diagram.svg" /></p>
+<p><img
+src="../../data/processed/figures/reliability_diagram.svg" /></p>
 <p><strong>Figure B2 — <code>reliability_diagram</code>.</strong> Binned
 calibration scatter (marker size proportional to bin count) against the
 45° identity line; annotated ECE = 0.007. One dominant bubble at (0.03,
@@ -1006,11 +1004,11 @@ calibration scatter (marker size proportional to bin count) against the
 the high-score bins landing on the diagonal. <em>Conclusion:</em>
 excellent calibration; scores are bimodal.</p>
 <p><img
-src="../data/processed/figures/frozen_test_confusion_matrix_operating.svg" /></p>
+src="../../data/processed/figures/frozen_test_confusion_matrix_operating.svg" /></p>
 <p><img
-src="../data/processed/figures/frozen_test_confusion_matrix_max_f1.svg" /></p>
+src="../../data/processed/figures/frozen_test_confusion_matrix_max_f1.svg" /></p>
 <p><img
-src="../data/processed/figures/frozen_test_confusion_matrix_base_rate.svg" /></p>
+src="../../data/processed/figures/frozen_test_confusion_matrix_base_rate.svg" /></p>
 <p><strong>Figure B3 —
 <code>frozen_test_confusion_matrix_{operating,max_f1,base_rate}</code>.</strong>
 Three 2x2 heatmaps, now emitted one per threshold policy (the earlier
@@ -1023,7 +1021,7 @@ precision (17 false positives) to catch all but one of 77 religious
 missions, while max-F1 roughly halves the false positives at the cost of
 six more misses.</p>
 <p><img
-src="../data/processed/figures/score_distribution_by_tier_label.svg" /></p>
+src="../../data/processed/figures/score_distribution_by_tier_label.svg" /></p>
 <p><strong>Figure B4 —
 <code>score_distribution_by_tier_label</code>.</strong> Stacked
 histograms of calibrated probability by tier (HIGH/MEDIUM/LOW), colored
@@ -1032,7 +1030,7 @@ band marked. Sharply bimodal in every tier (spikes near 0 and near 1).
 <em>Conclusion:</em> classification is insensitive to exact threshold
 placement within the wide gap; LOW shows marginally more mid-range
 mass.</p>
-<p><img src="../data/processed/figures/threshold_sweep.svg" /></p>
+<p><img src="../../data/processed/figures/threshold_sweep.svg" /></p>
 <p><strong>Figure B5 — <code>threshold_sweep</code>.</strong> Dual-axis
 sweep per tier: predicted-positive rate (left) and precision (right)
 vs. threshold. Predicted-positive rate collapses to a flat ~11–13% by
@@ -1041,22 +1039,27 @@ threshold 0.05; precision climbs to a ~90% shoulder immediately.
 flat across a wide window, so the chosen operating points sit on a
 stable plateau.</p>
 <p><img
-src="../data/processed/figures/prevalence_decomposition.svg" /></p>
+src="../../data/processed/figures/prevalence_decomposition.svg" /></p>
 <p><strong>Figure B6 — <code>prevalence_decomposition</code>.</strong>
 Bar chart of each stratum’s contribution to the composite with error
 bars and a “composite 14.4%” reference line. HM-PPI ~ 0.104 (widest CI),
 LOW-PPI ~ 0.120, LOW-RG ~ 0.144. <em>Conclusion:</em> method/stratum
 choice shifts the contribution by ~4 pp; the composite lands at
 14.4%.</p>
-<p><img src="../data/processed/figures/prevalence_forest.svg" /></p>
+<p><img src="../../data/processed/figures/prevalence_forest.svg" /></p>
 <p><strong>Figure B7 — <code>prevalence_forest</code>.</strong> Per-NTEE
 forest of prevalence with CI whiskers. One dominant outlier: X ~ 0.82
 (0.77–0.87). All others low: P ~ 0.19, Q ~ 0.17 (very wide), S ~ 0.12, I
 ~ 0.12, B ~ 0.09, most others ~ 0.005–0.01 with tight intervals.
-<em>Conclusion:</em> strong face validity — religion concentrates in
-group X with a modest service-sector tail.</p>
+<em>Conclusion:</em> strong face validity — group X is by far the most
+religious sector. The figure reads <em>within</em> groups, not across
+them: it says four in five group-X organizations are religious, not that
+four in five religious organizations are in group X. The composition
+estimate in §7 gives the latter (50.6%, 95% CI 37.2–62.6%), and the
+“modest” service-sector tail carries a large share of the religious
+total because those sectors are so much larger than X.</p>
 <p><img
-src="../data/processed/figures/rule_validation_intervals.svg" /></p>
+src="../../data/processed/figures/rule_validation_intervals.svg" /></p>
 <p><strong>Figure B8 — <code>rule_validation_intervals</code>.</strong>
 Dot-and-whisker Wilson intervals for the LOW-tier rule. Specificity 1.00
 (n=54, lower bound ~0.93); sensitivity 0.846 (n=13, CI ~0.58–0.97).
@@ -1064,14 +1067,15 @@ Dot-and-whisker Wilson intervals for the LOW-tier rule. Specificity 1.00
 uncertain on a tiny positive sample — the driver of the wide LOW-tier
 band.</p>
 <p><img
-src="../data/processed/figures/quantification_sensitivity.svg" /></p>
+src="../../data/processed/figures/quantification_sensitivity.svg" /></p>
 <p><strong>Figure B9 — <code>quantification_sensitivity</code>.</strong>
 Interval/point plot across quantifiers. PPI weighted ~ 0.136
 (0.117–0.155), PPI unweighted ~ 0.131 (0.112–0.150), anchor-multiplicity
 PPI ~ 0.131, and EMQ ~ 0.167 (point only, no interval).
 <em>Conclusion:</em> estimates are robust (~0.13–0.14) except EMQ, the
 visible high outlier.</p>
-<p><img src="../data/processed/figures/subgroup_performance.svg" /></p>
+<p><img
+src="../../data/processed/figures/subgroup_performance.svg" /></p>
 <p><strong>Figure B10 — <code>subgroup_performance</code>.</strong>
 Multi-metric strip plot (minority-F1, FPR, FNR) by word-count bin, NTEE
 group, and overall. The aggregate <code>upstream</code> row (n=175): FNR
@@ -1079,7 +1083,7 @@ group, and overall. The aggregate <code>upstream</code> row (n=175): FNR
 with mild FPR variation; several NTEE cells rest on n &lt;= 10.
 <em>Conclusion:</em> limited subgroup bias, but small-n cells are
 low-information.</p>
-<p><img src="../data/processed/figures/ngram_log_odds.svg" /></p>
+<p><img src="../../data/processed/figures/ngram_log_odds.svg" /></p>
 <p><strong>Figure B11 — <code>ngram_log_odds</code>.</strong> Top-30
 <em>naive</em> signed n-gram log-odds (a simple aggregate precursor to
 the prior-shrunk weighted version in Figures B15–B17). Descending:
@@ -1090,7 +1094,8 @@ the prior-shrunk weighted version in Figures B15–B17). Descending:
 <em>Conclusion:</em> the classifier keys on intuitive, face-valid
 Christian/Catholic vocabulary; the weighted diagnostics that follow
 confirm the same ordering with a rigorous statistical prior.</p>
-<p><img src="../data/processed/figures/documentation_curve.svg" /></p>
+<p><img
+src="../../data/processed/figures/documentation_curve.svg" /></p>
 <p><strong>Figure B12 — <code>documentation_curve</code>.</strong>
 Validation PR-AUC by encoder at full training data. After the run log
 was cleaned of degenerate rows from a since-fixed multi-GPU precision
@@ -1107,7 +1112,7 @@ degenerate auto-zoom around 1.0. A genuine multi-fraction learning curve
 — which would let us read off the point at which added silver stops
 helping — was not run and is future work (see §5).</p>
 <p><img
-src="../data/processed/figures/production_annotation_summary.svg" /></p>
+src="../../data/processed/figures/production_annotation_summary.svg" /></p>
 <p><strong>Figure B13 —
 <code>production_annotation_summary</code>.</strong> Annotation
 diagnostics for the production slate. Mean pairwise agreement 100%;
@@ -1115,7 +1120,7 @@ all-abstain 4%; tie 0%; per-prompt abstain rates DeepSeek v2 12% / v3 8%
 / v1 4%; vote-count distribution 0/1/2/3 votes = 784 / 604 / 1,413 /
 17,540. <em>Conclusion:</em> near-perfect label consensus, most items
 unanimous.</p>
-<p><img src="../data/processed/figures/bakeoff_summary.svg" /></p>
+<p><img src="../../data/processed/figures/bakeoff_summary.svg" /></p>
 <p><strong>Figure B14 — <code>bakeoff_summary</code>.</strong> Forest of
 minority-F1 (CI) and Cohen’s <span class="math inline"><em>κ</em></span>
 per modelxprompt arm, sorted, with a 0.70 decision floor and
@@ -1147,7 +1152,7 @@ Humanity), so the progression shows the signal sharpening from words to
 identities rather than repeating one result three times.</p>
 <p>Figures B15–B17 report <strong>weighted log-odds z-scores</strong> in
 the sense of <span class="citation"
-data-cites="monroe2008fightin">Monroe, Colaresi, and Quinn (<a
+data-cites="monroe2008fightin">Monroe et al. (<a
 href="#ref-monroe2008fightin" role="doc-biblioref">2008</a>)</span>
 (“Fightin’ Words”), which place an informative Dirichlet prior over the
 vocabulary so that rare words are shrunk toward zero and only terms with
@@ -1158,7 +1163,7 @@ for this corpus are overwhelmingly on the religious side. They are the
 statistically rigorous companion to the naive aggregate log-odds of
 Figure B11.</p>
 <p><img
-src="../data/processed/figures/ngram_weighted_log_odds_unigram.svg" /></p>
+src="../../data/processed/figures/ngram_weighted_log_odds_unigram.svg" /></p>
 <p><strong>Figure B15 —
 <code>ngram_weighted_log_odds_unigram</code>.</strong> Weighted log-odds
 z-scores for single words. The religious pole is led by
@@ -1174,7 +1179,7 @@ non-religious pole is defined by secular civic and scientific words:
 intuitively religious, with denominational identity (Christian, Jewish,
 Catholic) as the strongest axis.</p>
 <p><img
-src="../data/processed/figures/ngram_weighted_log_odds_bigram.svg" /></p>
+src="../../data/processed/figures/ngram_weighted_log_odds_bigram.svg" /></p>
 <p><strong>Figure B16 —
 <code>ngram_weighted_log_odds_bigram</code>.</strong> Weighted log-odds
 for word pairs. Religious: <em>jesus christ</em> (z~18), <em>of
@@ -1188,7 +1193,7 @@ largest negative), <em>the public</em> (~-10.5), <em>low income</em>
 are explicitly theological or denominational, while the secular side is
 service-delivery and administrative boilerplate.</p>
 <p><img
-src="../data/processed/figures/ngram_weighted_log_odds_trigram.svg" /></p>
+src="../../data/processed/figures/ngram_weighted_log_odds_trigram.svg" /></p>
 <p><strong>Figure B17 —
 <code>ngram_weighted_log_odds_trigram</code>.</strong> Weighted log-odds
 for word triples. Religious: <em>of jesus christ</em> (z~15.5), <em>the
@@ -1211,19 +1216,20 @@ vocabulary; the <strong>frequency</strong> clouds (B19) size each word
 by its raw within-class frequency. The pair is deliberately juxtaposed
 to make the weighting argument visible.</p>
 <p><img
-src="../data/processed/figures/wordcloud_distinctive_unigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_distinctive_unigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_distinctive_unigram_nonreligious.svg" />
+src="../../data/processed/figures/wordcloud_distinctive_unigram_class_0.svg" />
 <img
-src="../data/processed/figures/wordcloud_distinctive_bigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_distinctive_bigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_distinctive_bigram_nonreligious.svg" />
+src="../../data/processed/figures/wordcloud_distinctive_bigram_class_0.svg" />
 <img
-src="../data/processed/figures/wordcloud_distinctive_trigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_distinctive_trigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_distinctive_trigram_nonreligious.svg" /></p>
+src="../../data/processed/figures/wordcloud_distinctive_trigram_class_0.svg" /></p>
 <p><strong>Figure B18 —
-<code>wordcloud_distinctive_{unigram,bigram,trigram}_{religious,nonreligious}</code>.</strong>
+<code>wordcloud_distinctive_{unigram,bigram,trigram}_class_{0,1}</code>
+(class 1 = religious, class 0 = non-religious).</strong>
 Distinctiveness-weighted (log-odds) wordclouds, six panels. The
 religious panels (blue) are dominated, across all three n-gram orders,
 by <em>christian, faith, christ, church, jewish, spiritual</em>
@@ -1239,36 +1245,273 @@ vocabulary is stripped away, the two classes occupy cleanly separated
 lexical spaces — religion/theology versus civic, scientific, health,
 animal-welfare, sport and municipal service.</p>
 <p><img
-src="../data/processed/figures/wordcloud_frequency_unigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_frequency_unigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_frequency_unigram_nonreligious.svg" />
+src="../../data/processed/figures/wordcloud_frequency_unigram_class_0.svg" />
 <img
-src="../data/processed/figures/wordcloud_frequency_bigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_frequency_bigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_frequency_bigram_nonreligious.svg" />
+src="../../data/processed/figures/wordcloud_frequency_bigram_class_0.svg" />
 <img
-src="../data/processed/figures/wordcloud_frequency_trigram_religious.svg" />
+src="../../data/processed/figures/wordcloud_frequency_trigram_class_1.svg" />
 <img
-src="../data/processed/figures/wordcloud_frequency_trigram_nonreligious.svg" /></p>
+src="../../data/processed/figures/wordcloud_frequency_trigram_class_0.svg" /></p>
 <p><strong>Figure B19 —
-<code>wordcloud_frequency_{unigram,bigram,trigram}_{religious,nonreligious}</code>.</strong>
-Raw-frequency wordclouds, six panels. Here the two classes look
-<em>superficially similar</em>: the most frequent unigrams in both are
-generic nonprofit words — <em>community, education, health, children,
-people, families, youth, care</em> — with the religious panel
-additionally surfacing <em>christian, christ, church, faith, god</em>
-and the secular panel <em>school, students, housing, research,
-county</em>. The same overlap appears in bigrams (both share <em>non
-profit, health care</em>) and trigrams (both share IRS filing language
-such as <em>internal revenue code, section 501, primary exempt
-purpose</em>). <em>Conclusion:</em> raw frequency is a poor
-discriminator because the classes share a large mission-boilerplate
-vocabulary — precisely why the distinctiveness-weighted views (B15–B18)
-are needed to read the signal. (Two innocuous preprocessing residues are
-visible in these raw-frequency panels — an HTML non-breaking space and
-IRS filing boilerplate such as <em>internal revenue code</em>; they
-affect neither the classifier nor any estimate, and are discussed in
-§8.)</p>
+<code>wordcloud_frequency_{unigram,bigram,trigram}_class_{0,1}</code>
+(class 1 = religious, class 0 = non-religious).</strong> Raw-frequency
+wordclouds, six panels. Here the two classes look <em>superficially
+similar</em>: the most frequent unigrams in both are generic nonprofit
+words — <em>community, education, health, children, people, families,
+youth, care</em> — with the religious panel additionally surfacing
+<em>christian, christ, church, faith, god</em> and the secular panel
+<em>school, students, housing, research, county</em>. The same overlap
+appears in bigrams (both share <em>non profit, health care</em>) and
+trigrams (both surface filing-template language — <em>primary exempt
+purpose</em> leads the secular panel and is present in the religious one
+— and both surface <em>young mens christian</em>, the YMCA network being
+large enough to be frequent on either side). <em>Conclusion:</em> raw
+frequency is a poor discriminator because the classes share a large
+mission-boilerplate vocabulary — precisely why the
+distinctiveness-weighted views (B15–B18) are needed to read the signal.
+These panels are rendered after the stage-10 stopword filter, which
+removes one decoding residue (<em>nbsp</em>) and five IRS filing tokens
+(<em>internal</em>, <em>revenue</em>, <em>code</em>, <em>section</em>,
+<em>501</em>); §8 gives the full quantified accounting of the
+<em>nbsp</em> defect and the rationale for the filing-token removal.</p>
+<h2
+id="population-language-diagnostics-what-the-classifier-keys-on-at-corpus-scale">Population
+language diagnostics: what the classifier keys on at corpus scale</h2>
+<p>Figures B20–B24 repeat the vocabulary diagnostics on the <strong>full
+560,354-organization prediction corpus</strong> rather than the
+20,000-row silver pool, and the change of input changes what the figures
+are evidence <em>for</em>. Every class split in this family is drawn
+from the classifier’s own output — <code>pred_label</code>,
+<code>pred_label_maxf1</code>, <code>pred_label_baserate</code>, or the
+calibrated probability itself — so reading them as a description of how
+religious and secular nonprofits write would be circular: the labels
+come from the model. They are <strong>model interpretation</strong>, not
+population description. What they legitimately show is which vocabulary
+the encoder keys on when it is applied at corpus scale, and that is
+worth reporting for a specific reason. §8 names lexicon circularity as
+the strongest still-open threat to construct validity, and these figures
+speak to it from one direction: the population diagnostics and the
+silver-pool diagnostics of Figures B11 and B15–B19 rest on <strong>two
+independently derived label sources</strong> — an LLM ensemble voting on
+20,000 missions, and a fine-tuned encoder scoring 560,354 organizations
+— and they recover the same lexical axis. Seven of the ten strongest
+population religious unigrams — <em>religious, spiritual, love, faith,
+church, christian, god</em>, the exceptions being <em>churches</em>,
+<em>healing</em> and <em>st</em> — also lead the silver-pool panel of
+Figure B15, and both secular poles are led by the same word,
+<em>public</em>. That agreement is a
+<strong>convergent-validity</strong> argument, not a substantive finding
+about nonprofits. One caution on reading the numbers: weighted log-odds
+z-scores scale with corpus size, so the population z of 142.5 for
+<em>religious</em> and the silver-pool z of ~36 for <em>christian</em>
+are not comparable magnitudes. The comparison that carries information
+is membership and sign, not size.</p>
+<p>All figures in this family are rendered after the stage-10 stopword
+filter described in the B19 caption and §8: <em>nbsp</em> plus the five
+IRS filing tokens are absent from every panel and from every companion
+<code>.csv</code>. Because those tokens carried large counts, removing
+them changes the class totals in the Fightin’ Words prior and therefore
+every z-score in the population tables; the numbers quoted below are
+from the current tables and should not be differenced against any
+earlier published value.</p>
+<p><img
+src="../../data/processed/figures/population_keyness_volcano_pred_label_unigram.png" /></p>
+<p><img
+src="../../data/processed/figures/population_keyness_volcano_pred_label_bigram.png" /></p>
+<p><img
+src="../../data/processed/figures/population_keyness_volcano_prob_weighted_unigram.png" /></p>
+<p><strong>Figure B20 —
+<code>population_keyness_volcano_{pred_label,pred_label_maxf1,pred_label_baserate}_unigram</code>,
+<code>population_keyness_volcano_pred_label_bigram</code>,
+<code>population_keyness_volcano_prob_weighted_unigram</code>.</strong>
+Five volcano panels (no trigram panel is emitted). Each plots weighted
+log-odds z-score on the x-axis against
+<code>log10(total term count + 1)</code> on the y-axis, with a solid
+zero line, dashed guides at z = ±3, blue for the religious side and
+orange for the non-religious side; the three panels reproduced above are
+the operating-label unigram, the operating-label bigram, and the
+probability-weighted unigram, and the max-F1 and base-rate panels differ
+from the first only in which of the triple labels defines the split. In
+the <code>pred_label</code> unigram panel the religious pole runs
+<em>religious</em> (z = 142.5), <em>spiritual</em> (96.9), <em>love</em>
+(93.0), <em>faith</em> (77.9), <em>churches</em> (71.3),
+<em>healing</em> (67.1), <em>church</em> (65.1), <em>christian</em>
+(64.4), <em>god</em> (63.4), <em>st</em> (59.6); the secular pole runs
+<em>public</em> (-61.6), <em>provide</em> (-49.9), <em>county</em>
+(-48.1), <em>research</em> (-44.4), <em>youth</em> (-43.3),
+<em>school</em> (-41.4). The bigram panel is led by <em>and
+spiritual</em> (67.7), <em>jesus christ</em> (63.5), <em>the gospel</em>
+(60.5), <em>of jesus</em> (59.9), <em>of god</em> (53.2) against <em>to
+provide</em> (-36.1), <em>low income</em> (-36.0), <em>high school</em>
+(-34.5), <em>the public</em> (-30.3). The probability-weighted panel
+uses no threshold at all — it splits the corpus by calibrated
+probability mass, so its counts are fractional — and returns
+<em>religious</em> (128.2), <em>christian</em> (113.4),
+<em>spiritual</em> (112.2), <em>love</em> (88.7), <em>faith</em> (87.9)
+against <em>public</em> (-54.4), <em>county</em> (-40.5),
+<em>research</em> (-37.8). The vertical axis is what makes this the
+right lead figure. The highest-count terms sit at the apex of the plume
+and spread only modestly around zero, while the terms furthest to the
+right are middling in frequency: <em>religious</em> occurs 15,453 times
+and <em>spiritual</em> 9,868, against 149,714 occurrences of
+<em>provide</em>. The same trade-off shows in the rate ratios behind the
+ranking. <em>Love</em> (log2 rate ratio 2.98; 5,302 occurrences in the
+predicted-religious corpus against 3,275 in the predicted-secular one),
+<em>healing</em> (2.54; 3,182 against 2,666) and <em>st</em> (2.34;
+2,754 against 2,661) earn high z-scores from breadth while remaining
+common in both classes, whereas <em>christian</em> (10.90; 19,434
+against 49), <em>church</em> (9.33; 11,640 against 88) and <em>god</em>
+(8.98; 9,668 against 93) are near-exclusive. <em>Conclusion:</em> the
+separating vocabulary is not the frequent vocabulary — the two are close
+to orthogonal at corpus scale, which is the §7 point about naive word
+counts made on 560,354 organizations rather than on 20,000, and the
+volcano is the only panel in this family that shows the exclusive and
+the merely-skewed markers as different objects. A practical note, as for
+Figure B23: each panel plots roughly 30,000 terms, so the SVG renderings
+run to 4.8 MB for the unigram panels and 40 MB for the bigram panel, and
+the bigram SVG exceeds the 500,000-element ceiling of the LaTeX
+<code>svg</code> package. The PNG renderings are reproduced here and
+should be used in any compiled document.</p>
+<p><img
+src="../../data/processed/figures/population_top_terms_lollipop_pred_label_unigram.svg" /></p>
+<p><img
+src="../../data/processed/figures/population_top_terms_lollipop_pred_label_trigram.svg" /></p>
+<p><strong>Figure B21 —
+<code>population_top_terms_lollipop_{pred_label,pred_label_maxf1,pred_label_baserate,prob_weighted}_unigram</code>,
+<code>population_top_terms_lollipop_pred_label_bigram</code>,
+<code>population_top_terms_lollipop_pred_label_trigram</code>.</strong>
+Six lollipop panels, the readable ranked view of the same z-scores: the
+15 highest and 15 lowest terms per panel, drawn as stems from zero. The
+two panels reproduced above are the operating-label unigram and trigram;
+the bigram, max-F1, base-rate and probability-weighted panels rank the
+same way under their respective label definitions. The unigram panel
+runs from <em>religious</em> (142.5) down to <em>principles</em> (54.4)
+on the religious side and from <em>public</em> (-61.6) to
+<em>opportunities</em> (-35.1) on the secular side, and it surfaces
+terms the top-ten summary omits: <em>spread</em> (57.9), <em>word</em>
+(56.8), <em>spirit</em> (54.7), <em>centered</em> (54.7). The trigram
+panel is where this view earns its place, because it resolves named
+entities that no unigram list can show: <em>of jesus christ</em> (67.0),
+<em>the gospel of</em> (57.1), <em>gospel of jesus</em> (53.2), <em>the
+love of</em> (41.0), then <em>young mens christian</em> and <em>mens
+christian association</em> tied at 39.9 — the YMCA, 1,652 occurrences
+across only 833 documents — followed by <em>to spread the</em> (36.5),
+<em>the word of</em> (36.5), <em>word of god</em> (35.4). The secular
+trigram side is generic mission phrasing and civic entities: <em>quality
+of life</em> (-22.5), <em>the quality of</em> (-21.0), <em>the sport
+of</em> (-20.5), <em>to improve the</em> (-19.6), <em>the city of</em>
+(-19.1), <em>parent teacher association</em> (-16.7), <em>the game
+of</em> (-15.5). Note the asymmetry the stems make obvious: the
+religious extreme reaches z = 67 while the secular extreme stops at
+-22.5. <em>Conclusion:</em> the ranked view is the one to read for
+<em>which</em> terms; it recovers the same theological and
+denominational axis as the silver-pool trigram panel of Figure B17,
+including the YMCA and the gospel phrases, from an entirely different
+label source — but it flattens the frequency dimension the volcano
+preserves, so a term that is merely skewed and a term that is
+near-exclusive appear as neighbours.</p>
+<p><img
+src="../../data/processed/figures/population_wordcloud_distinctive_bigram_class_1.svg" />
+<img
+src="../../data/processed/figures/population_wordcloud_distinctive_bigram_class_0.svg" />
+<img
+src="../../data/processed/figures/population_wordcloud_frequency_bigram_class_1.svg" />
+<img
+src="../../data/processed/figures/population_wordcloud_frequency_bigram_class_0.svg" /></p>
+<p><strong>Figure B22 —
+<code>population_wordcloud_{frequency,distinctive}_{unigram,bigram,trigram}_class_{0,1}</code>
+(class 1 = predicted religious, class 0 = predicted
+non-religious).</strong> Twelve panels: the full
+frequency-versus-distinctiveness crossing at all three n-gram orders,
+colored blue for the predicted-religious class and orange for the
+predicted-non-religious class, exactly mirroring the silver-pool
+construction of Figures B18–B19. The four bigram panels are reproduced
+above because that order carries the clearest impression. The
+distinctive bigram panels separate cleanly: <em>the gospel, and
+spiritual, of jesus, jesus christ, of god, the world, religious and, the
+love, gospel of, faith based, to spread</em> on the religious side
+against <em>to provide, low income, high school, the public, to improve,
+access to, affordable housing, school district, parent teacher, the
+sport, the game, the arts</em> on the secular side. The frequency bigram
+panels reproduce the B19 lesson at corpus scale rather than
+contradicting it: the predicted-religious frequency panel is led by
+<em>jesus christ, faith based, gospel jesus, christ centered</em> but
+also by <em>non profit, health care, united states, high school, quality
+life</em>, which are precisely the terms that dominate the
+predicted-secular frequency panel. <em>Conclusion:</em> the corpus-scale
+clouds behave like the silver-pool clouds — distinctiveness weighting
+separates the classes, raw frequency does not — reproducing at 560,354
+organizations the lesson Figures B18–B19 draw at 20,000, and giving at a
+glance the separation that Figures B20–B21 establish with numbers.</p>
+<p><img
+src="../../data/processed/figures/population_term_scatter_pred_label_unigram.png" /></p>
+<p><strong>Figure B23 —
+<code>population_term_scatter_{pred_label,pred_label_maxf1,pred_label_baserate}_unigram</code>,
+<code>population_term_scatter_pred_label_bigram</code>.</strong> Four
+diagnostic panels (no trigram and no probability-weighted variant). Each
+plots a term’s <code>log10</code> rate in the predicted-non-religious
+corpus against its <code>log10</code> rate in the predicted-religious
+corpus, with a grey identity diagonal, so that a term’s perpendicular
+distance from the diagonal is its log rate ratio and the labelled
+outliers are the same ones the volcano labels — <em>religious,
+spiritual, faith, churches, love, healing</em> above the line,
+<em>public, provide, county, research, school, youth</em> below it. It
+surfaces no term the volcano does not, it is noisy at roughly 30,000
+plotted unigrams, and the discretization floor of the low-count terms
+shows as horizontal and vertical striping in the lower left.
+<em>Conclusion:</em> retained for completeness as a direct view of the
+two class rates, but Figure B20 is the panel to read. A practical note:
+the SVG renderings of this family are very large — 19 MB for the unigram
+panel and 158 MB for the bigram panel — so the PNG (reproduced here) or
+the PDF should be used in any compiled document.</p>
+<p><img
+src="../../data/processed/figures/population_keyness_sensitivity_heatmap_unigram.svg" /></p>
+<p><strong>Figure B24 —
+<code>population_keyness_sensitivity_heatmap_unigram</code> (companion
+table
+<code>population_keyness_sensitivity_terms_unigram.csv</code>).</strong>
+The robustness figure for this whole family, and the answer to the
+obvious objection that the vocabulary story might be an artifact of a
+recall-first operating threshold. A 20-term by 4-column heatmap of
+weighted log-odds z-scores, terms on the vertical axis and label
+definition on the horizontal, on a diverging blue/red scale centered at
+zero. The four definitions are the three shipped labels —
+<code>pred_label</code> (recall-first, the operating label used for
+prevalence), <code>pred_label_maxf1</code>,
+<code>pred_label_baserate</code> — plus a high-confidence subset that
+keeps only rows with calibrated probability &lt;= 0.20 or &gt;= 0.80 and
+splits them by <code>pred_label</code>. The probability-weighted
+definition of Figures B20–B21, which applies no threshold at all, is
+<em>not</em> a column here; it is rendered only as its own volcano,
+lollipop and keyness table. The picture is one of stability. No term
+changes sign in any column: the ten religious-side terms stay positive
+and the ten secular-side terms stay negative under every definition, and
+the rank ordering is near-identical. Several terms barely move at all —
+<em>healing</em> runs 67.1 / 67.9 / 68.0 / 67.6 across the four
+definitions, <em>love</em> 93.0 / 94.7 / 93.5 / 97.5, <em>public</em>
+-61.6 / -61.4 / -58.5 / -60.8. Two cells move visibly.
+<em>Christian</em> climbs from 64.4 under <code>pred_label</code> to
+102.3 under <code>pred_label_maxf1</code>: the stricter threshold
+reassigns borderline documents, and the term’s occurrences in the
+predicted-negative class rise from 49 to 271 while its rate within the
+predicted-positive class rises from 0.0069 to 0.0078, so the term is
+scored against a slightly less lopsided contrast. <em>God</em> falls
+from 63.4 to 39.0 in the high-confidence subset (the pale band in the
+figure), the largest single movement in the table; the term’s total
+count barely changes (9,761 to 9,276), so the shift comes from the class
+composition of the retained rows rather than from the term becoming
+rarer, and the companion table carries no per-class breakdown of that
+subset with which to say more. <em>Religious</em> likewise softens from
+142.5 to 125.2 there. <em>Conclusion:</em> the population vocabulary
+axis is a property of the classifier, not of the operating point — it
+survives a max-F1 threshold, a base-rate-precision threshold, and the
+removal of every uncertain row — so the convergent-validity reading of
+Figures B20–B22 does not depend on the recall-first choice made in
+§6.</p>
 <h1 id="appendix-c.-supplementary-tables">Appendix C. Supplementary
 Tables</h1>
 <p><strong>Table C1 — Bake-off (model x prompt), sorted by
@@ -1712,7 +1955,9 @@ class="math inline"><em>n</em> &lt; 10</span>.</p>
 </table>
 <p>(NTEE abbreviations follow the NCCS major-group scheme; where the
 anchor sector label differs from the classic letter mapping we report
-the code as recorded.)</p>
+the code as recorded. Cells are prevalence <em>within</em> each group,
+not the distribution of religious organizations across groups; for that
+composition see §7.)</p>
 <p><strong>Table C5 — Prevalence summary (all estimands).</strong></p>
 <table>
 <colgroup>
@@ -1919,7 +2164,7 @@ the final exam during development.</li>
 </ul>
 <h1 class="unnumbered" id="references">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent"
-data-entry-spacing="0" role="list">
+role="list">
 <div id="ref-angelopoulos2023ppi" class="csl-entry" role="listitem">
 Angelopoulos, Anastasios N., John C. Duchi, and Tijana Zrnic. 2023.
 <span>“<span>PPI++</span>: Efficient Prediction-Powered
@@ -1928,8 +2173,8 @@ href="https://arxiv.org/abs/2311.01453">https://arxiv.org/abs/2311.01453</a>.
 </div>
 <div id="ref-davisgoadrich2006" class="csl-entry" role="listitem">
 Davis, Jesse, and Mark Goadrich. 2006. <span>“The Relationship Between
-Precision-Recall and <span>ROC</span> Curves.”</span> In <em>Proceedings
-of ICML</em>, 233–40. <a
+Precision-Recall and <span>ROC</span> Curves.”</span> <em>Proceedings of
+ICML</em>, 233–40. <a
 href="https://doi.org/10.1145/1143844.1143874">https://doi.org/10.1145/1143844.1143874</a>.
 </div>
 <div id="ref-dawidskene1979" class="csl-entry" role="listitem">
@@ -1947,8 +2192,8 @@ href="https://doi.org/10.1093/pan/mps028">https://doi.org/10.1093/pan/mps028</a>
 </div>
 <div id="ref-guo2017calibration" class="csl-entry" role="listitem">
 Guo, Chuan, Geoff Pleiss, Yu Sun, and Kilian Q. Weinberger. 2017.
-<span>“On Calibration of Modern Neural Networks.”</span> In
-<em>Proceedings of ICML</em>, 1321–30.
+<span>“On Calibration of Modern Neural Networks.”</span> <em>Proceedings
+of ICML</em>, 1321–30.
 </div>
 <div id="ref-he2021deberta" class="csl-entry" role="listitem">
 He, Pengcheng, Jianfeng Gao, and Weizhu Chen. 2021.
@@ -1975,10 +2220,10 @@ Events Data.”</span> <em>Political Analysis</em> 9 (2): 137–63. <a
 href="https://doi.org/10.1093/oxfordjournals.pan.a004868">https://doi.org/10.1093/oxfordjournals.pan.a004868</a>.
 </div>
 <div id="ref-kwon2023vllm" class="csl-entry" role="listitem">
-Kwon, Woosuk, Zhuohan Li, Siyuan Zhuang, et al. 2023. <span>“Efficient
-Memory Management for Large Language Model Serving with
-<span>PagedAttention</span>.”</span> In <em>Proceedings of SOSP</em>,
-611–26. <a
+<span class="nocase">Kwon, Woosuk, Zhuohan Li, Siyuan Zhuang, et
+al.</span> 2023. <span>“Efficient Memory Management for Large Language
+Model Serving with <span>PagedAttention</span>.”</span> <em>Proceedings
+of SOSP</em>, 611–26. <a
 href="https://doi.org/10.1145/3600006.3613165">https://doi.org/10.1145/3600006.3613165</a>.
 </div>
 <div id="ref-meyermittag2017" class="csl-entry" role="listitem">
@@ -1998,13 +2243,13 @@ href="https://doi.org/10.1093/pan/mpn018">https://doi.org/10.1093/pan/mpn018</a>
 Northcutt, Curtis G., Lu Jiang, and Isaac L. Chuang. 2021.
 <span>“Confident Learning: Estimating Uncertainty in Dataset
 Labels.”</span> <em>Journal of Artificial Intelligence Research</em> 70:
-1373–1411. <a
+1373–411. <a
 href="https://doi.org/10.1613/jair.1.12125">https://doi.org/10.1613/jair.1.12125</a>.
 </div>
 <div id="ref-platt1999" class="csl-entry" role="listitem">
 Platt, John C. 1999. <span>“Probabilistic Outputs for Support Vector
 Machines and Comparisons to Regularized Likelihood Methods.”</span> In
-<em>Advances in Large Margin Classifiers</em>, 61–74. MIT Press.
+<em>Advances in Large Margin Classifiers</em>. MIT Press.
 </div>
 <div id="ref-ratner2017snorkel" class="csl-entry" role="listitem">
 Ratner, Alexander, Stephen H. Bach, Henry Ehrenberg, Jason Fries, Sen
@@ -2016,7 +2261,7 @@ href="https://doi.org/10.14778/3157794.3157797">https://doi.org/10.14778/3157794
 <div id="ref-reimers2019sbert" class="csl-entry" role="listitem">
 Reimers, Nils, and Iryna Gurevych. 2019.
 <span>“Sentence-<span>BERT</span>: Sentence Embeddings Using Siamese
-<span>BERT</span>-Networks.”</span> In <em>Proceedings of
+<span>BERT</span>-Networks.”</span> <em>Proceedings of
 EMNLP-IJCNLP</em>, 3982–92. <a
 href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a>.
 </div>
@@ -2033,11 +2278,19 @@ Probabilities: A Simple Procedure.”</span> <em>Neural Computation</em>
 14 (1): 217–47. <a
 href="https://doi.org/10.1162/089976602753284446">https://doi.org/10.1162/089976602753284446</a>.
 </div>
+<div id="ref-siderunruh2004" class="csl-entry" role="listitem">
+Sider, Ronald J., and Heidi Rolland Unruh. 2004. <span>“Typology of
+Religious Characteristics of Social Service and Educational
+Organizations and Programs.”</span> <em>Nonprofit and Voluntary Sector
+Quarterly</em> 33 (1): 109–34. <a
+href="https://doi.org/10.1177/0899764003257494">https://doi.org/10.1177/0899764003257494</a>.
+</div>
 <div id="ref-warner2024modernbert" class="csl-entry" role="listitem">
-Warner, Benjamin, Antoine Chaffin, Benjamin Clavié, et al. 2024.
-<span>“Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder
-for Fast, Memory Efficient, and Long Context Fine-Tuning and
-Inference.”</span> <em>arXiv Preprint arXiv:2412.13663</em>. <a
+<span class="nocase">Warner, Benjamin, Antoine Chaffin, Benjamin Clavié,
+et al.</span> 2024. <span>“Smarter, Better, Faster, Longer: A Modern
+Bidirectional Encoder for Fast, Memory Efficient, and Long Context
+Fine-Tuning and Inference.”</span> <em>arXiv Preprint
+arXiv:2412.13663</em>. <a
 href="https://arxiv.org/abs/2412.13663">https://arxiv.org/abs/2412.13663</a>.
 </div>
 <div id="ref-ziems2024" class="csl-entry" role="listitem">

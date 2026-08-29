@@ -178,63 +178,63 @@ Global determinism knobs: `SEED=42`, 2,000 bootstrap resamples for every CI. Run
 
 All figures render as PNG/SVG/PDF triplets in `data/processed/figures/`. Numbers below are read from the rendered figures and cross-checked against the source JSON.
 
-![](../data/processed/figures/precision_recall_curve.svg)
+![](../../data/processed/figures/precision_recall_curve.svg)
 
 **Figure B1 — `precision_recall_curve`.** PR curve (main) with inset ROC. The PR curve holds a 0.90–0.94 precision plateau across recall 0.2–0.9 before collapsing near recall 1.0; the three candidate thresholds (operating, base-rate, max-F1) cluster on the high-recall shoulder. Inset ROC hugs the top-left corner. *Reads:* PR-AUC 0.901, ROC-AUC 0.949. *Conclusion:* strong ranking with a stable high-precision operating region.
 
-![](../data/processed/figures/reliability_diagram.svg)
+![](../../data/processed/figures/reliability_diagram.svg)
 
 **Figure B2 — `reliability_diagram`.** Binned calibration scatter (marker size proportional to bin count) against the 45° identity line; annotated ECE = 0.007. One dominant bubble at (0.03, 0.03) — most organizations are confidently, correctly negative — with the high-score bins landing on the diagonal. *Conclusion:* excellent calibration; scores are bimodal.
 
-![](../data/processed/figures/frozen_test_confusion_matrix_operating.svg)
+![](../../data/processed/figures/frozen_test_confusion_matrix_operating.svg)
 
-![](../data/processed/figures/frozen_test_confusion_matrix_max_f1.svg)
+![](../../data/processed/figures/frozen_test_confusion_matrix_max_f1.svg)
 
-![](../data/processed/figures/frozen_test_confusion_matrix_base_rate.svg)
+![](../../data/processed/figures/frozen_test_confusion_matrix_base_rate.svg)
 
 **Figure B3 — `frozen_test_confusion_matrix_{operating,max_f1,base_rate}`.** Three 2x2 heatmaps, now emitted one per threshold policy (the earlier combined three-panel `frozen_test_confusion_matrices` figure is superseded). Operating (thr 0.058): TN 81 / FP 17 / FN 1 / TP 76. Max-F1 (thr 0.608): TN 87 / FP 11 / FN 7 / TP 70. Base-rate (thr 0.094): TN 84 / FP 14 / FN 2 / TP 75. *Conclusion:* the three thresholds trace a clean recall–precision dial — the operating point sacrifices precision (17 false positives) to catch all but one of 77 religious missions, while max-F1 roughly halves the false positives at the cost of six more misses.
 
-![](../data/processed/figures/score_distribution_by_tier_label.svg)
+![](../../data/processed/figures/score_distribution_by_tier_label.svg)
 
 **Figure B4 — `score_distribution_by_tier_label`.** Stacked histograms of calibrated probability by tier (HIGH/MEDIUM/LOW), colored by predicted label, with the three thresholds and the inter-threshold band marked. Sharply bimodal in every tier (spikes near 0 and near 1). *Conclusion:* classification is insensitive to exact threshold placement within the wide gap; LOW shows marginally more mid-range mass.
 
-![](../data/processed/figures/threshold_sweep.svg)
+![](../../data/processed/figures/threshold_sweep.svg)
 
 **Figure B5 — `threshold_sweep`.** Dual-axis sweep per tier: predicted-positive rate (left) and precision (right) vs. threshold. Predicted-positive rate collapses to a flat ~11–13% by threshold 0.05; precision climbs to a ~90% shoulder immediately. *Conclusion:* because scores are bimodal, both quantities are flat across a wide window, so the chosen operating points sit on a stable plateau.
 
-![](../data/processed/figures/prevalence_decomposition.svg)
+![](../../data/processed/figures/prevalence_decomposition.svg)
 
 **Figure B6 — `prevalence_decomposition`.** Bar chart of each stratum's contribution to the composite with error bars and a "composite 14.4%" reference line. HM-PPI ~ 0.104 (widest CI), LOW-PPI ~ 0.120, LOW-RG ~ 0.144. *Conclusion:* method/stratum choice shifts the contribution by ~4 pp; the composite lands at 14.4%.
 
-![](../data/processed/figures/prevalence_forest.svg)
+![](../../data/processed/figures/prevalence_forest.svg)
 
 **Figure B7 — `prevalence_forest`.** Per-NTEE forest of prevalence with CI whiskers. One dominant outlier: X ~ 0.82 (0.77–0.87). All others low: P ~ 0.19, Q ~ 0.17 (very wide), S ~ 0.12, I ~ 0.12, B ~ 0.09, most others ~ 0.005–0.01 with tight intervals. *Conclusion:* strong face validity — group X is by far the most religious sector. The figure reads *within* groups, not across them: it says four in five group-X organizations are religious, not that four in five religious organizations are in group X. The composition estimate in §7 gives the latter (50.6%, 95% CI 37.2–62.6%), and the "modest" service-sector tail carries a large share of the religious total because those sectors are so much larger than X.
 
-![](../data/processed/figures/rule_validation_intervals.svg)
+![](../../data/processed/figures/rule_validation_intervals.svg)
 
 **Figure B8 — `rule_validation_intervals`.** Dot-and-whisker Wilson intervals for the LOW-tier rule. Specificity 1.00 (n=54, lower bound ~0.93); sensitivity 0.846 (n=13, CI ~0.58–0.97). *Conclusion:* the rule is highly specific but its recall is uncertain on a tiny positive sample — the driver of the wide LOW-tier band.
 
-![](../data/processed/figures/quantification_sensitivity.svg)
+![](../../data/processed/figures/quantification_sensitivity.svg)
 
 **Figure B9 — `quantification_sensitivity`.** Interval/point plot across quantifiers. PPI weighted ~ 0.136 (0.117–0.155), PPI unweighted ~ 0.131 (0.112–0.150), anchor-multiplicity PPI ~ 0.131, and EMQ ~ 0.167 (point only, no interval). *Conclusion:* estimates are robust (~0.13–0.14) except EMQ, the visible high outlier.
 
-![](../data/processed/figures/subgroup_performance.svg)
+![](../../data/processed/figures/subgroup_performance.svg)
 
 **Figure B10 — `subgroup_performance`.** Multi-metric strip plot (minority-F1, FPR, FNR) by word-count bin, NTEE group, and overall. The aggregate `upstream` row (n=175): FNR ~ 0.02, FPR ~ 0.18, minority-F1 ~ 1.0. Most subgroups score F1 >= 0.8 with mild FPR variation; several NTEE cells rest on n <= 10. *Conclusion:* limited subgroup bias, but small-n cells are low-information.
 
-![](../data/processed/figures/ngram_log_odds.svg)
+![](../../data/processed/figures/ngram_log_odds.svg)
 
 **Figure B11 — `ngram_log_odds`.** Top-30 *naive* signed n-gram log-odds (a simple aggregate precursor to the prior-shrunk weighted version in Figures B15–B17). Descending: *jesus* (~7.3), *jesus christ*, *of jesus*, *gospel*, *the gospel*, *christ*, *god*, *christ centered*, then *catholic*, *prayer*, *bible*, *discipleship*, *missionaries*. *Conclusion:* the classifier keys on intuitive, face-valid Christian/Catholic vocabulary; the weighted diagnostics that follow confirm the same ordering with a rigorous statistical prior.
 
-![](../data/processed/figures/documentation_curve.svg)
+![](../../data/processed/figures/documentation_curve.svg)
 
 **Figure B12 — `documentation_curve`.** Validation PR-AUC by encoder at full training data. After the run log was cleaned of degenerate rows from a since-fixed multi-GPU precision bug, all four learners now cluster tightly in the 0.90–0.95 band: DeBERTa-v3-base ~0.945 (highest), TF-IDF logistic regression ~0.938, ModernBERT-base ~0.935, and MiniLM logistic regression ~0.895. *Conclusion:* the transformers and even a linear TF-IDF baseline achieve near-identical validation PR-AUC, indicating the religious/non-religious signal in mission text is strong and largely lexical, and that no learner is data-starved at 20k silver rows. *Caveat:* only a single training fraction (1.0) was run, so this is a per-encoder snapshot, not a true learning curve; the x-axis is a degenerate auto-zoom around 1.0. A genuine multi-fraction learning curve — which would let us read off the point at which added silver stops helping — was not run and is future work (see §5).
 
-![](../data/processed/figures/production_annotation_summary.svg)
+![](../../data/processed/figures/production_annotation_summary.svg)
 
 **Figure B13 — `production_annotation_summary`.** Annotation diagnostics for the production slate. Mean pairwise agreement 100%; all-abstain 4%; tie 0%; per-prompt abstain rates DeepSeek v2 12% / v3 8% / v1 4%; vote-count distribution 0/1/2/3 votes = 784 / 604 / 1,413 / 17,540. *Conclusion:* near-perfect label consensus, most items unanimous.
 
-![](../data/processed/figures/bakeoff_summary.svg)
+![](../../data/processed/figures/bakeoff_summary.svg)
 
 **Figure B14 — `bakeoff_summary`.** Forest of minority-F1 (CI) and Cohen's $\kappa$ per modelxprompt arm, sorted, with a 0.70 decision floor and high-abstain (>=25%) rings. Top: DeepSeek v2 ($\kappa$ ~0.97). Several top scorers carry high-abstain rings (26–36%); `gpt-4o- mini v3` fails outright (F1 CI ~0.3–0.6). *Conclusion:* exposes the accuracy/abstention trade-off behind slate selection.
 
@@ -244,35 +244,35 @@ The figures above validate the classifier's *performance*; the figures below ope
 
 Figures B15–B17 report **weighted log-odds z-scores** in the sense of @monroe2008fightin ("Fightin' Words"), which place an informative Dirichlet prior over the vocabulary so that rare words are shrunk toward zero and only terms with reliably class-skewed usage receive large scores. The x-axis is the z-score (positive = distinctively religious, negative = distinctively non-religious); each panel shows the 30 highest-magnitude n-grams, which for this corpus are overwhelmingly on the religious side. They are the statistically rigorous companion to the naive aggregate log-odds of Figure B11.
 
-![](../data/processed/figures/ngram_weighted_log_odds_unigram.svg)
+![](../../data/processed/figures/ngram_weighted_log_odds_unigram.svg)
 
 **Figure B15 — `ngram_weighted_log_odds_unigram`.** Weighted log-odds z-scores for single words. The religious pole is led by *christian* (z~36, by far the strongest single signal), then *faith* (~27), *church* (~25), *spiritual* (~25), *jewish* (~23), *religious* (~23), *love* (~21), *christ* (~20), *ministry* (~20), *god* (~16), *catholic* (~15), *jesus* (~14). The much smaller non-religious pole is defined by secular civic and scientific words: *public* (z~-18, largest negative), *research* (~-14), *county* (~-13), *promote* and *improve* (~-11). *Conclusion:* the separating vocabulary is unambiguously and intuitively religious, with denominational identity (Christian, Jewish, Catholic) as the strongest axis.
 
-![](../data/processed/figures/ngram_weighted_log_odds_bigram.svg)
+![](../../data/processed/figures/ngram_weighted_log_odds_bigram.svg)
 
 **Figure B16 — `ngram_weighted_log_odds_bigram`.** Weighted log-odds for word pairs. Religious: *jesus christ* (z~18), *of jesus* (~17), *and spiritual* (~16.5), *faith based* (~15.5), *the gospel* (~15), *of god* (~12.5), *of christ* (~11.5), *young mens christian* / *mens christian* (~11), *christ centered* (~10.5), *jewish community* (~10.5). Non-religious: *to promote* (z~-11, largest negative), *the public* (~-10.5), *low income* (~-9), *to improve* (~-9). *Conclusion:* religious bigrams are explicitly theological or denominational, while the secular side is service-delivery and administrative boilerplate.
 
-![](../data/processed/figures/ngram_weighted_log_odds_trigram.svg)
+![](../../data/processed/figures/ngram_weighted_log_odds_trigram.svg)
 
 **Figure B17 — `ngram_weighted_log_odds_trigram`.** Weighted log-odds for word triples. Religious: *of jesus christ* (z~15.5), *the gospel of* (~11.5), *gospel of jesus* (~11), *mens christian association* (~10.5), *young mens christian* (~10.5), *the love of* (~9.5), *of the jewish* (~8.5), *habitat for humanity* (~7.5), *word of god* (~6.5), *the healing ministry* (~6). Non-religious: *quality of life* (z~-7.5, largest negative), *to improve the* (~-7). *Conclusion:* trigrams sharpen the signal into named phrases and organizations (e.g., YMCA — *young mens christian association* — and *habitat for humanity* surface as faith-associated), while only generic mission clichés mark the secular side.
 
 Figures B18–B19 present the same information as class-conditional **wordclouds**, where word size encodes weight and color encodes class (blue = religious, orange = non-religious). Two complementary views are shown. The **distinctive** clouds (B18) size each word by its log-odds distinctiveness, suppressing shared vocabulary; the **frequency** clouds (B19) size each word by its raw within-class frequency. The pair is deliberately juxtaposed to make the weighting argument visible.
 
-![](../data/processed/figures/wordcloud_distinctive_unigram_class_1.svg)
-![](../data/processed/figures/wordcloud_distinctive_unigram_class_0.svg)
-![](../data/processed/figures/wordcloud_distinctive_bigram_class_1.svg)
-![](../data/processed/figures/wordcloud_distinctive_bigram_class_0.svg)
-![](../data/processed/figures/wordcloud_distinctive_trigram_class_1.svg)
-![](../data/processed/figures/wordcloud_distinctive_trigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_distinctive_unigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_distinctive_unigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_distinctive_bigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_distinctive_bigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_distinctive_trigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_distinctive_trigram_class_0.svg)
 
 **Figure B18 — `wordcloud_distinctive_{unigram,bigram,trigram}_class_{0,1}` (class 1 = religious, class 0 = non-religious).** Distinctiveness-weighted (log-odds) wordclouds, six panels. The religious panels (blue) are dominated, across all three n-gram orders, by *christian, faith, christ, church, jewish, spiritual* (unigrams); *jesus christ, the gospel, of jesus, faith based, christ centered* (bigrams); and *of jesus christ, gospel of jesus, mens christian association, word of god, habitat for humanity* (trigrams). The non-religious panels (orange) are dominated by *public, research, county, cancer, animals* (unigrams); *to promote, the public, low income, high school, affordable housing* (bigrams); and *to improve the, quality of life, the city of, the sport of, the game of* (trigrams). *Conclusion:* once shared vocabulary is stripped away, the two classes occupy cleanly separated lexical spaces — religion/theology versus civic, scientific, health, animal-welfare, sport and municipal service.
 
-![](../data/processed/figures/wordcloud_frequency_unigram_class_1.svg)
-![](../data/processed/figures/wordcloud_frequency_unigram_class_0.svg)
-![](../data/processed/figures/wordcloud_frequency_bigram_class_1.svg)
-![](../data/processed/figures/wordcloud_frequency_bigram_class_0.svg)
-![](../data/processed/figures/wordcloud_frequency_trigram_class_1.svg)
-![](../data/processed/figures/wordcloud_frequency_trigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_frequency_unigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_frequency_unigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_frequency_bigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_frequency_bigram_class_0.svg)
+![](../../data/processed/figures/wordcloud_frequency_trigram_class_1.svg)
+![](../../data/processed/figures/wordcloud_frequency_trigram_class_0.svg)
 
 **Figure B19 — `wordcloud_frequency_{unigram,bigram,trigram}_class_{0,1}` (class 1 = religious, class 0 = non-religious).** Raw-frequency wordclouds, six panels. Here the two classes look *superficially similar*: the most frequent unigrams in both are generic nonprofit words — *community, education, health, children, people, families, youth, care* — with the religious panel additionally surfacing *christian, christ, church, faith, god* and the secular panel *school, students, housing, research, county*. The same overlap appears in bigrams (both share *non profit, health care*) and trigrams (both surface filing-template language — *primary exempt purpose* leads the secular panel and is present in the religious one — and both surface *young mens christian*, the YMCA network being large enough to be frequent on either side). *Conclusion:* raw frequency is a poor discriminator because the classes share a large mission-boilerplate vocabulary — precisely why the distinctiveness-weighted views (B15–B18) are needed to read the signal. These panels are rendered after the stage-10 stopword filter, which removes one decoding residue (*nbsp*) and five IRS filing tokens (*internal*, *revenue*, *code*, *section*, *501*); §8 gives the full quantified accounting of the *nbsp* defect and the rationale for the filing-token removal.
 
@@ -282,32 +282,32 @@ Figures B20–B24 repeat the vocabulary diagnostics on the **full 560,354-organi
 
 All figures in this family are rendered after the stage-10 stopword filter described in the B19 caption and §8: *nbsp* plus the five IRS filing tokens are absent from every panel and from every companion `.csv`. Because those tokens carried large counts, removing them changes the class totals in the Fightin' Words prior and therefore every z-score in the population tables; the numbers quoted below are from the current tables and should not be differenced against any earlier published value.
 
-![](../data/processed/figures/population_keyness_volcano_pred_label_unigram.png)
+![](../../data/processed/figures/population_keyness_volcano_pred_label_unigram.png)
 
-![](../data/processed/figures/population_keyness_volcano_pred_label_bigram.png)
+![](../../data/processed/figures/population_keyness_volcano_pred_label_bigram.png)
 
-![](../data/processed/figures/population_keyness_volcano_prob_weighted_unigram.png)
+![](../../data/processed/figures/population_keyness_volcano_prob_weighted_unigram.png)
 
 **Figure B20 — `population_keyness_volcano_{pred_label,pred_label_maxf1,pred_label_baserate}_unigram`, `population_keyness_volcano_pred_label_bigram`, `population_keyness_volcano_prob_weighted_unigram`.** Five volcano panels (no trigram panel is emitted). Each plots weighted log-odds z-score on the x-axis against `log10(total term count + 1)` on the y-axis, with a solid zero line, dashed guides at z = ±3, blue for the religious side and orange for the non-religious side; the three panels reproduced above are the operating-label unigram, the operating-label bigram, and the probability-weighted unigram, and the max-F1 and base-rate panels differ from the first only in which of the triple labels defines the split. In the `pred_label` unigram panel the religious pole runs *religious* (z = 142.5), *spiritual* (96.9), *love* (93.0), *faith* (77.9), *churches* (71.3), *healing* (67.1), *church* (65.1), *christian* (64.4), *god* (63.4), *st* (59.6); the secular pole runs *public* (-61.6), *provide* (-49.9), *county* (-48.1), *research* (-44.4), *youth* (-43.3), *school* (-41.4). The bigram panel is led by *and spiritual* (67.7), *jesus christ* (63.5), *the gospel* (60.5), *of jesus* (59.9), *of god* (53.2) against *to provide* (-36.1), *low income* (-36.0), *high school* (-34.5), *the public* (-30.3). The probability-weighted panel uses no threshold at all — it splits the corpus by calibrated probability mass, so its counts are fractional — and returns *religious* (128.2), *christian* (113.4), *spiritual* (112.2), *love* (88.7), *faith* (87.9) against *public* (-54.4), *county* (-40.5), *research* (-37.8). The vertical axis is what makes this the right lead figure. The highest-count terms sit at the apex of the plume and spread only modestly around zero, while the terms furthest to the right are middling in frequency: *religious* occurs 15,453 times and *spiritual* 9,868, against 149,714 occurrences of *provide*. The same trade-off shows in the rate ratios behind the ranking. *Love* (log2 rate ratio 2.98; 5,302 occurrences in the predicted-religious corpus against 3,275 in the predicted-secular one), *healing* (2.54; 3,182 against 2,666) and *st* (2.34; 2,754 against 2,661) earn high z-scores from breadth while remaining common in both classes, whereas *christian* (10.90; 19,434 against 49), *church* (9.33; 11,640 against 88) and *god* (8.98; 9,668 against 93) are near-exclusive. *Conclusion:* the separating vocabulary is not the frequent vocabulary — the two are close to orthogonal at corpus scale, which is the §7 point about naive word counts made on 560,354 organizations rather than on 20,000, and the volcano is the only panel in this family that shows the exclusive and the merely-skewed markers as different objects. A practical note, as for Figure B23: each panel plots roughly 30,000 terms, so the SVG renderings run to 4.8 MB for the unigram panels and 40 MB for the bigram panel, and the bigram SVG exceeds the 500,000-element ceiling of the LaTeX `svg` package. The PNG renderings are reproduced here and should be used in any compiled document.
 
-![](../data/processed/figures/population_top_terms_lollipop_pred_label_unigram.svg)
+![](../../data/processed/figures/population_top_terms_lollipop_pred_label_unigram.svg)
 
-![](../data/processed/figures/population_top_terms_lollipop_pred_label_trigram.svg)
+![](../../data/processed/figures/population_top_terms_lollipop_pred_label_trigram.svg)
 
 **Figure B21 — `population_top_terms_lollipop_{pred_label,pred_label_maxf1,pred_label_baserate,prob_weighted}_unigram`, `population_top_terms_lollipop_pred_label_bigram`, `population_top_terms_lollipop_pred_label_trigram`.** Six lollipop panels, the readable ranked view of the same z-scores: the 15 highest and 15 lowest terms per panel, drawn as stems from zero. The two panels reproduced above are the operating-label unigram and trigram; the bigram, max-F1, base-rate and probability-weighted panels rank the same way under their respective label definitions. The unigram panel runs from *religious* (142.5) down to *principles* (54.4) on the religious side and from *public* (-61.6) to *opportunities* (-35.1) on the secular side, and it surfaces terms the top-ten summary omits: *spread* (57.9), *word* (56.8), *spirit* (54.7), *centered* (54.7). The trigram panel is where this view earns its place, because it resolves named entities that no unigram list can show: *of jesus christ* (67.0), *the gospel of* (57.1), *gospel of jesus* (53.2), *the love of* (41.0), then *young mens christian* and *mens christian association* tied at 39.9 — the YMCA, 1,652 occurrences across only 833 documents — followed by *to spread the* (36.5), *the word of* (36.5), *word of god* (35.4). The secular trigram side is generic mission phrasing and civic entities: *quality of life* (-22.5), *the quality of* (-21.0), *the sport of* (-20.5), *to improve the* (-19.6), *the city of* (-19.1), *parent teacher association* (-16.7), *the game of* (-15.5). Note the asymmetry the stems make obvious: the religious extreme reaches z = 67 while the secular extreme stops at -22.5. *Conclusion:* the ranked view is the one to read for *which* terms; it recovers the same theological and denominational axis as the silver-pool trigram panel of Figure B17, including the YMCA and the gospel phrases, from an entirely different label source — but it flattens the frequency dimension the volcano preserves, so a term that is merely skewed and a term that is near-exclusive appear as neighbours.
 
-![](../data/processed/figures/population_wordcloud_distinctive_bigram_class_1.svg)
-![](../data/processed/figures/population_wordcloud_distinctive_bigram_class_0.svg)
-![](../data/processed/figures/population_wordcloud_frequency_bigram_class_1.svg)
-![](../data/processed/figures/population_wordcloud_frequency_bigram_class_0.svg)
+![](../../data/processed/figures/population_wordcloud_distinctive_bigram_class_1.svg)
+![](../../data/processed/figures/population_wordcloud_distinctive_bigram_class_0.svg)
+![](../../data/processed/figures/population_wordcloud_frequency_bigram_class_1.svg)
+![](../../data/processed/figures/population_wordcloud_frequency_bigram_class_0.svg)
 
 **Figure B22 — `population_wordcloud_{frequency,distinctive}_{unigram,bigram,trigram}_class_{0,1}` (class 1 = predicted religious, class 0 = predicted non-religious).** Twelve panels: the full frequency-versus-distinctiveness crossing at all three n-gram orders, colored blue for the predicted-religious class and orange for the predicted-non-religious class, exactly mirroring the silver-pool construction of Figures B18–B19. The four bigram panels are reproduced above because that order carries the clearest impression. The distinctive bigram panels separate cleanly: *the gospel, and spiritual, of jesus, jesus christ, of god, the world, religious and, the love, gospel of, faith based, to spread* on the religious side against *to provide, low income, high school, the public, to improve, access to, affordable housing, school district, parent teacher, the sport, the game, the arts* on the secular side. The frequency bigram panels reproduce the B19 lesson at corpus scale rather than contradicting it: the predicted-religious frequency panel is led by *jesus christ, faith based, gospel jesus, christ centered* but also by *non profit, health care, united states, high school, quality life*, which are precisely the terms that dominate the predicted-secular frequency panel. *Conclusion:* the corpus-scale clouds behave like the silver-pool clouds — distinctiveness weighting separates the classes, raw frequency does not — reproducing at 560,354 organizations the lesson Figures B18–B19 draw at 20,000, and giving at a glance the separation that Figures B20–B21 establish with numbers.
 
-![](../data/processed/figures/population_term_scatter_pred_label_unigram.png)
+![](../../data/processed/figures/population_term_scatter_pred_label_unigram.png)
 
 **Figure B23 — `population_term_scatter_{pred_label,pred_label_maxf1,pred_label_baserate}_unigram`, `population_term_scatter_pred_label_bigram`.** Four diagnostic panels (no trigram and no probability-weighted variant). Each plots a term's `log10` rate in the predicted-non-religious corpus against its `log10` rate in the predicted-religious corpus, with a grey identity diagonal, so that a term's perpendicular distance from the diagonal is its log rate ratio and the labelled outliers are the same ones the volcano labels — *religious, spiritual, faith, churches, love, healing* above the line, *public, provide, county, research, school, youth* below it. It surfaces no term the volcano does not, it is noisy at roughly 30,000 plotted unigrams, and the discretization floor of the low-count terms shows as horizontal and vertical striping in the lower left. *Conclusion:* retained for completeness as a direct view of the two class rates, but Figure B20 is the panel to read. A practical note: the SVG renderings of this family are very large — 19 MB for the unigram panel and 158 MB for the bigram panel — so the PNG (reproduced here) or the PDF should be used in any compiled document.
 
-![](../data/processed/figures/population_keyness_sensitivity_heatmap_unigram.svg)
+![](../../data/processed/figures/population_keyness_sensitivity_heatmap_unigram.svg)
 
 **Figure B24 — `population_keyness_sensitivity_heatmap_unigram` (companion table `population_keyness_sensitivity_terms_unigram.csv`).** The robustness figure for this whole family, and the answer to the obvious objection that the vocabulary story might be an artifact of a recall-first operating threshold. A 20-term by 4-column heatmap of weighted log-odds z-scores, terms on the vertical axis and label definition on the horizontal, on a diverging blue/red scale centered at zero. The four definitions are the three shipped labels — `pred_label` (recall-first, the operating label used for prevalence), `pred_label_maxf1`, `pred_label_baserate` — plus a high-confidence subset that keeps only rows with calibrated probability <= 0.20 or >= 0.80 and splits them by `pred_label`. The probability-weighted definition of Figures B20–B21, which applies no threshold at all, is *not* a column here; it is rendered only as its own volcano, lollipop and keyness table. The picture is one of stability. No term changes sign in any column: the ten religious-side terms stay positive and the ten secular-side terms stay negative under every definition, and the rank ordering is near-identical. Several terms barely move at all — *healing* runs 67.1 / 67.9 / 68.0 / 67.6 across the four definitions, *love* 93.0 / 94.7 / 93.5 / 97.5, *public* -61.6 / -61.4 / -58.5 / -60.8. Two cells move visibly. *Christian* climbs from 64.4 under `pred_label` to 102.3 under `pred_label_maxf1`: the stricter threshold reassigns borderline documents, and the term's occurrences in the predicted-negative class rise from 49 to 271 while its rate within the predicted-positive class rises from 0.0069 to 0.0078, so the term is scored against a slightly less lopsided contrast. *God* falls from 63.4 to 39.0 in the high-confidence subset (the pale band in the figure), the largest single movement in the table; the term's total count barely changes (9,761 to 9,276), so the shift comes from the class composition of the retained rows rather than from the term becoming rarer, and the companion table carries no per-class breakdown of that subset with which to say more. *Religious* likewise softens from 142.5 to 125.2 there. *Conclusion:* the population vocabulary axis is a property of the classifier, not of the operating point — it survives a max-F1 threshold, a base-rate-precision threshold, and the removal of every uncertain row — so the convergent-validity reading of Figures B20–B22 does not depend on the recall-first choice made in §6.
 

@@ -1,0 +1,38 @@
+html {
+  background-color: #fdfdfd;
+  color: #1a1a1a;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 48em;
+  padding: 72px 88px;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+img,
+svg {
+  height: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 24px;
+  }
+}
+
+@media print {
+  html {
+    background-color: white;
+  }
+
+  body {
+    background-color: transparent;
+    color: black;
+    padding: 0;
+  }
+}

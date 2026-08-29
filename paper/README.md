@@ -12,3 +12,9 @@ ln -s "/home/dubidub/Cloud/Sync/Dropbox/Apps/Overleaf/Nonprofit summary" paper/d
 ```
 
 Copy figures into the Overleaf project when needed. Do not add relative links from the shared draft back to artifacts in this repository; the Overleaf project must remain independently buildable.
+
+Build the technical report's tracked HTML and PDF from its Markdown source with:
+
+```bash
+make -C paper/techreport
+```
