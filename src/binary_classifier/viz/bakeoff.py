@@ -125,7 +125,6 @@ def bakeoff_summary(results: object, ax: Axes) -> None:
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Score")
     ax.set_ylabel("Model × prompt arm")
-    ax.set_title("Bake-off: minority-F1 and chance-corrected agreement")
     ax.grid(axis="x", alpha=0.25)
     ax.legend(loc="upper left")
     logger.info("Rendered bake-off summary for %d arms", len(frame))
@@ -244,7 +243,6 @@ def production_annotation_summary(df: pd.DataFrame, ax: Axes) -> None:
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Rate")
     ax.set_ylabel("Model/source diagnostic")
-    ax.set_title("Production annotation diagnostics")
     from matplotlib.patches import Patch
 
     legend_handles = [
@@ -332,7 +330,6 @@ def canary_drift(rows: object, ax: Axes) -> None:
     pad_axes(ax, x=0.0, y=0.02)
     ax.set_ylabel("Agreement with baseline")
     ax.set_xlabel("Canary monitor run")
-    ax.set_title("Canary drift audit")
     ax.grid(axis="y", alpha=0.25)
     handles, labels = ax.get_legend_handles_labels()
     if handles:

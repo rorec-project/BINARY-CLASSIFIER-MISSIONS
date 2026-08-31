@@ -78,7 +78,6 @@ def ngram_log_odds(
     ax.axvline(0.0, color=OKABE_ITO_BLACK, linewidth=0.8)
     ax.set_xlabel("Log odds: religious vs nonreligious")
     ax.set_ylabel("N-gram")
-    ax.set_title(f"Top {len(selected_terms)} silver-label n-gram log odds")
     logger.info("Rendered n-gram log-odds plot with %d terms", len(selected_terms))
 
 
@@ -124,10 +123,6 @@ def ngram_weighted_log_odds(
     ax.axvline(0.0, color=OKABE_ITO_BLACK, linewidth=0.8)
     ax.set_xlabel("Weighted log-odds z-score: religious vs nonreligious")
     ax.set_ylabel("N-gram")
-    ax.set_title(
-        f"Top {len(selected_terms)} weighted log-odds "
-        f"{ngram_range[0]}-{ngram_range[1]}-grams",
-    )
     logger.info(
         "Rendered weighted n-gram log-odds plot with %d terms",
         len(selected_terms),
@@ -263,7 +258,6 @@ def term_scatter_plot(
     keyness: pd.DataFrame,
     ax: Axes,
     *,
-    title: str,
     top_k: int = 12,
 ) -> None:
     """Plot a static Scattertext-style term frequency comparison."""
@@ -285,7 +279,6 @@ def term_scatter_plot(
     ax.set_ylim(left, right)
     ax.set_xlabel("log10 rate in predicted non-religious corpus")
     ax.set_ylabel("log10 rate in predicted religious corpus")
-    ax.set_title(title)
     _label_extreme_terms(frame, ax, "negative_rate", "positive_rate", top_k=top_k)
 
 
@@ -293,7 +286,6 @@ def keyness_volcano_plot(
     keyness: pd.DataFrame,
     ax: Axes,
     *,
-    title: str,
     top_k: int = 12,
 ) -> None:
     """Plot distinctiveness against corpus frequency."""
@@ -307,7 +299,6 @@ def keyness_volcano_plot(
         ax.axvline(threshold, color=MUTED_GREY, linestyle="--", linewidth=0.8)
     ax.set_xlabel("Weighted log-odds z-score")
     ax.set_ylabel("log10(total term count + 1)")
-    ax.set_title(title)
     _label_extreme_terms(frame, ax, "z_score", "total_count", top_k=top_k)
     pad_axes(ax, x=0.04, y=0.04)
 
@@ -316,7 +307,6 @@ def top_terms_lollipop_plot(
     keyness: pd.DataFrame,
     ax: Axes,
     *,
-    title: str,
     top_k: int = 15,
 ) -> None:
     """Plot top positive and negative distinctive terms as a lollipop chart."""
@@ -328,15 +318,12 @@ def top_terms_lollipop_plot(
     ax.axvline(0.0, color=OKABE_ITO_BLACK, linewidth=0.8)
     ax.set_yticks(y, labels=frame["term"].to_list())
     ax.set_xlabel("Weighted log-odds z-score")
-    ax.set_title(title)
     pad_axes(ax, x=0.05, y=0.02)
 
 
 def keyness_sensitivity_heatmap(
     sensitivity: pd.DataFrame,
     ax: Axes,
-    *,
-    title: str,
 ) -> None:
     """Plot z-score stability for selected terms across label definitions."""
     if sensitivity.empty:
@@ -359,7 +346,6 @@ def keyness_sensitivity_heatmap(
         ha="right",
     )
     ax.set_yticks(np.arange(matrix.shape[0]), labels=matrix.index.to_list())
-    ax.set_title(title)
     ax.set_xlabel("Population label definition")
     ax.set_ylabel("Term")
     ax.figure.colorbar(image, ax=ax, label="Weighted log-odds z-score")

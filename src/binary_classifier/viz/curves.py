@@ -68,7 +68,6 @@ def documentation_curve(
 
     ax.set_xlabel("Training fraction")
     ax.set_ylabel("Validation PR-AUC")
-    ax.set_title("Documentation curve")
     ax.set_ylim(0.0, 1.0)
     pad_axes(ax, x=0.0, y=0.02)
     ax.legend(title="Encoder")
@@ -96,7 +95,6 @@ def pr_curve(points: object, ax: Axes) -> None:
     )
     ax.set_xlabel("Recall")
     ax.set_ylabel("Precision")
-    ax.set_title("Precision-recall curve")
     ax.set_xlim(0.0, 1.0)
     ax.set_ylim(0.0, 1.05)
     pad_axes(ax, x=0.02, y=0.0)
@@ -121,7 +119,6 @@ def frozen_test_curves(payload: Mapping[str, Any], ax: Axes) -> None:
     ax.plot(pr_frame["recall"], pr_frame["precision"], color=OKABE_ITO_BLUE, label="PR")
     ax.set_xlabel("Recall")
     ax.set_ylabel("Precision")
-    ax.set_title("Frozen-test precision-recall curve")
     ax.set_xlim(0.0, 1.0)
     ax.set_ylim(0.0, 1.05)
     pad_axes(ax, x=0.02, y=0.0)
@@ -140,7 +137,6 @@ def frozen_test_curves(payload: Mapping[str, Any], ax: Axes) -> None:
     inset.plot(roc_frame["fpr"], roc_frame["tpr"], color=OKABE_ITO_ORANGE, label="ROC")
     inset.set_xlabel("FPR", fontsize=7)
     inset.set_ylabel("TPR", fontsize=7)
-    inset.set_title("ROC", fontsize=8)
     inset.set_xlim(0.0, 1.0)
     inset.set_ylim(0.0, 1.0)
     pad_axes(inset, x=0.02, y=0.02)
@@ -204,7 +200,6 @@ def score_distribution_by_tier_label(
         pad_axes(tier_ax, x=0.02, y=0.0)
         tier_ax.set_ylabel(tier)
         tier_ax.grid(axis="x", alpha=0.20)
-    axes[0].set_title("Calibrated-score distribution by tier and label")
     axes[-1].set_xlabel("Calibrated probability")
     handles, labels = axes[0].get_legend_handles_labels()
     if handles:
@@ -255,8 +250,12 @@ def draw_single_confusion_matrix(
     ax.set_ylim(-0.5, 1.5)
     ax.invert_yaxis()
     threshold = item.get("threshold")
-    suffix = "" if threshold is None else f"\nthr={float(threshold):.3f}"
-    ax.set_title(f"{name.replace('_', ' ').title()}{suffix}")
+    threshold_label = (
+        name.replace("_", " ").title()
+        if threshold is None
+        else f"{name.replace('_', ' ').title()}; threshold={float(threshold):.3f}"
+    )
+    ax.set_xlabel(threshold_label)
     ax.set_xticks([0, 1], labels=["Pred 0", "Pred 1"])
     ax.set_yticks([0, 1], labels=["True 0", "True 1"])
 
@@ -319,7 +318,6 @@ def subgroup_performance(subgroups: object, ax: Axes) -> None:
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Metric value")
     ax.set_ylabel("Subgroup")
-    ax.set_title("Frozen-test subgroup performance")
     ax.legend(loc="center left", bbox_to_anchor=(1.01, 0.5), borderaxespad=0.0)
     ax.grid(axis="x", alpha=0.25)
     logger.info("Rendered subgroup performance for %d rows", len(frame))
@@ -365,20 +363,19 @@ def reliability_diagram(points: object, ax: Axes, ece: float | None = None) -> N
         linewidth=0.9,
         label="Perfect calibration",
     )
+    observed_label = (
+        "Observed bins" if ece is None else f"Observed bins (ECE={ece:.3f})"
+    )
     ax.scatter(
         frame["mean_predicted"].to_numpy(dtype=float),
         frame["observed_fraction"].to_numpy(dtype=float),
         s=marker_sizes,
         color=OKABE_ITO_BLUE,
         alpha=0.8,
-        label="Observed bins",
+        label=observed_label,
     )
     ax.set_xlabel("Mean predicted probability")
     ax.set_ylabel("Observed positive fraction")
-    title = "Reliability diagram"
-    if ece is not None:
-        title = f"{title} (ECE={ece:.3f})"
-    ax.set_title(title)
     ax.set_xlim(-0.03, 1.03)
     ax.set_ylim(-0.03, 1.03)
     ax.grid(alpha=0.25)
@@ -697,7 +694,6 @@ def threshold_sweep_plot(
             fontsize=6.5,
         )
 
-    axes[0].set_title("Threshold-sweep: predicted positive rate and precision by tier")
     axes[-1].set_xlabel("Threshold")
 
     logger.info(

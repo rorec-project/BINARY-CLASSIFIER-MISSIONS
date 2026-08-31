@@ -1125,7 +1125,6 @@ def _maybe_render_population_language_keyness(
                             term_scatter_plot(
                                 keyness,
                                 ax,
-                                title=f"Population term rates by {label_col} ({ngram_name})",
                             )
                         ),
                         figsize=figure_size(width=PAGE_WIDTH, height=5.6),
@@ -1137,7 +1136,6 @@ def _maybe_render_population_language_keyness(
                             keyness_volcano_plot(
                                 keyness,
                                 ax,
-                                title=f"Population keyness by {label_col} ({ngram_name})",
                             )
                         ),
                         figsize=figure_size(width=PAGE_WIDTH, height=4.8),
@@ -1149,7 +1147,6 @@ def _maybe_render_population_language_keyness(
                         top_terms_lollipop_plot(
                             keyness,
                             ax,
-                            title=f"Top population distinctive terms by {label_col} ({ngram_name})",
                         )
                     ),
                     figsize=figure_size(width=PAGE_WIDTH, height=6.2),
@@ -1188,7 +1185,6 @@ def _maybe_render_population_probability_weighted_keyness(
         lambda ax: keyness_volcano_plot(
             keyness,
             ax,
-            title="Probability-weighted population keyness (unigram)",
         ),
         figsize=figure_size(width=PAGE_WIDTH, height=4.8),
     )
@@ -1198,7 +1194,6 @@ def _maybe_render_population_probability_weighted_keyness(
         lambda ax: top_terms_lollipop_plot(
             keyness,
             ax,
-            title="Probability-weighted top distinctive population terms (unigram)",
         ),
         figsize=figure_size(width=PAGE_WIDTH, height=6.2),
     )
@@ -1228,7 +1223,6 @@ def _maybe_render_population_keyness_sensitivity(
         lambda ax: keyness_sensitivity_heatmap(
             sensitivity,
             ax,
-            title="Population keyness sensitivity across label definitions",
         ),
         figsize=figure_size(width=PAGE_WIDTH, height=6.0),
     )

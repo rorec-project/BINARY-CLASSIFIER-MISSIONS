@@ -511,7 +511,7 @@ def test_bakeoff_summary_renders_real_results():
     fig, ax = plt.subplots(figsize=(7, 5))
     try:
         bakeoff_summary(json.loads(path.read_text()), ax)
-        assert ax.get_title()
+        assert ax.get_title() == ""
     finally:
         plt.close(fig)
 

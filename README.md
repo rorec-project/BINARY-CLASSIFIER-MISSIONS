@@ -207,9 +207,10 @@ If any threshold is missed, the pipeline exits non-zero and prints guidance. The
 - `data/processed/predictions/predictions.parquet` — deduplicated per-text-row predictions with three binary labels and calibrated probabilities.
 - `data/processed/predictions/predictions_full.parquet` — per-organization release artifact, expanded from deduplicated predictions to every raw `EIN2`.
 - `data/processed/prevalence/prevalence_report.json` — population prevalence estimate with PPI++ primary, LOW decomposition, 95% bootstrap CI, and per-NTEE stratum estimates where available.
-- `data/processed/viz/` — PNG/SVG figures for all evaluation and prevalence diagnostics.
-  Stage 10 saves figures with transparent backgrounds; white backgrounds in PDF/HTML outputs
-  usually come from the viewer or Pandoc compositing transparent figures onto a white page.
+- `data/processed/figures/` — PNG, SVG, and PDF figures for evaluation,
+  inference, language, and prevalence diagnostics. Stage 10 saves figures with
+  transparent backgrounds; white backgrounds in PDF/HTML outputs usually come
+  from the viewer or Pandoc compositing transparent figures onto a white page.
 - `data/processed/run_manifest.json` — reproducibility manifest: git SHA, config hash, environment lock, input row counts.
 
 ### Reading the prevalence report
@@ -411,10 +412,10 @@ Stage 09 estimates **per-organization** population prevalence over all raw `EIN2
 
 ### B10. Stage 10 — Visualization
 
-Stage 10 renders paper-quality figures from the evaluation, inference, and prevalence artifacts. It produces PR and ROC curves with operating-point annotations, confusion matrices at all three thresholds, calibrated-score distributions by tier with threshold bands, a prevalence decomposition waterfall, rule-validation Wilson-interval plots, quantification-sensitivity comparisons, and subgroup-performance dot plots. All figures use paper-width sizing via `viz.style` and are emitted as PNG, SVG, and PDF simultaneously. The module is wired into the pipeline orchestrator and runs after stage 09, but also runs standalone via its script.
+Stage 10 renders paper-quality figures from the evaluation, inference, and prevalence artifacts. It produces PR and ROC curves with operating-point annotations, confusion matrices at all three thresholds, calibrated-score distributions by tier with threshold bands, a prevalence decomposition waterfall, rule-validation Wilson-interval plots, quantification-sensitivity comparisons, and subgroup-performance dot plots. All figures use paper-width sizing via `viz.style` and are emitted as PNG, SVG, and PDF simultaneously. Generated figures intentionally omit embedded figure and axes titles because the research paper and technical report supply panel headings and captions; axis labels, legends, thresholds, and metric annotations remain in the figures. The module is wired into the pipeline orchestrator and runs after stage 09, but also runs standalone via `uv run python scripts/10_visualize.py`.
 
 - **Inputs:** evaluation, inference, and prevalence artifacts.
-- **Outputs:** PNG, SVG, and PDF figures under `data/processed/viz/`.
+- **Outputs:** PNG, SVG, and PDF figures under `data/processed/figures/`.
 - **Caveat:** skips missing inputs gracefully rather than failing.
 
 ### B11. Stage 11 — Aggregation diagnostics (script-only, not orchestrated)

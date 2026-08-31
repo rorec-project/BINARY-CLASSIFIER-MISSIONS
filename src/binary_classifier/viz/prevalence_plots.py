@@ -26,8 +26,6 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-_UNIVERSE = "501C3-charity mission frame"
-
 _REQUIRED_COLUMNS = {
     "ntee_major_group",
     "n_anchor",
@@ -129,7 +127,6 @@ def prevalence_forest(prevalence_by_ntee_df: pd.DataFrame, ax: Axes) -> None:
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Estimated religious prevalence")
     ax.set_ylabel("NTEE major group")
-    ax.set_title("Prevalence by NTEE group")
     ax.grid(axis="x", alpha=0.25)
     handles, legend_labels = ax.get_legend_handles_labels()
     deduped = dict(zip(legend_labels, handles, strict=True))
@@ -193,7 +190,6 @@ def prevalence_decomposition(report: Mapping[str, Any], ax: Axes) -> None:
         ha="right",
     )
     ax.set_ylabel("Contribution to population prevalence")
-    ax.set_title("Prevalence decomposition")
     ax.set_ylim(0.0, min(1.0, max(0.05, total * 1.35)))
     pad_axes(ax, x=0.0, y=0.02)
     ax.grid(axis="y", alpha=0.25)
@@ -226,7 +222,6 @@ def rule_validation_intervals(report: Mapping[str, Any], ax: Axes) -> None:
             fontsize=9,
         )
         ax.set_axis_off()
-        ax.set_title("Rule-validation Wilson intervals")
         logger.info("Rendered rule-validation interval placeholder")
         return
     frame = pd.DataFrame(rows)
@@ -260,7 +255,6 @@ def rule_validation_intervals(report: Mapping[str, Any], ax: Axes) -> None:
     ax.set_xlim(0.0, 1.12)
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Validation estimate")
-    ax.set_title("Rule-validation Wilson intervals")
     ax.grid(axis="x", alpha=0.25)
     logger.info("Rendered rule-validation intervals")
 
@@ -307,7 +301,6 @@ def quantification_sensitivity(report: Mapping[str, Any], ax: Axes) -> None:
     ax.set_xlim(0.0, min(1.0, max(0.1, float(np.nanmax(estimates)) * 1.4)))
     pad_axes(ax, x=0.02, y=0.0)
     ax.set_xlabel("Estimated prevalence")
-    ax.set_title("Quantification sensitivity")
     ax.grid(axis="x", alpha=0.25)
     ax.legend(loc="lower right")
     logger.info("Rendered quantification sensitivity with %d rows", len(frame))
@@ -450,6 +443,9 @@ def ntee_mean_score_by_group(ntee_descriptives_df: pd.DataFrame, ax: Axes) -> No
         pad_axes(panel_ax, x=0.0, y=0.02)
 
     axes[0].set_yticks(y, labels=frame["label"].to_list())
+    axes[0].set_ylabel(
+        f"NTEE major group\nClassifier-scored rows only ({scored_share:.1%} overall)"
+    )
     for yi, share in zip(y, scored_share_by_row, strict=True):
         axes[1].text(
             1.03,
@@ -460,11 +456,6 @@ def ntee_mean_score_by_group(ntee_descriptives_df: pd.DataFrame, ax: Axes) -> No
             color=MUTED_GREY,
             clip_on=False,
         )
-    fig.suptitle(
-        f"Mean classifier score by NTEE major group, {_UNIVERSE}\n"
-        f"Classifier-scored rows only ({scored_share:.1%})",
-        fontsize=9,
-    )
     logger.info("Rendered NTEE mean-score plot with %d groups", len(frame))
 
 
@@ -520,7 +511,6 @@ def ntee_classified_share_by_group(
     ax.set_xlim(0.0, min(1.0, max(0.1, float(row_max.max()) * 1.15)))
     pad_axes(ax, x=0.0, y=0.02)
     ax.set_xlabel("Classified share (raw classifier output)")
-    ax.set_title(f"Classified share by NTEE major group, {_UNIVERSE}")
     ax.grid(axis="x", alpha=0.25)
     ax.legend(title="Operating threshold", loc="lower right")
     logger.info("Rendered NTEE classified-share plot with %d groups", len(frame))
@@ -583,7 +573,6 @@ def ntee_classified_count_by_group(
     ax.set_xlim(0.0, max(1.0, float(row_max.max()) * 1.1))
     pad_axes(ax, x=0.0, y=0.02)
     ax.set_xlabel("Organizations classified religious (count)")
-    ax.set_title(f"Count classified religious by NTEE major group, {_UNIVERSE}")
     ax.grid(axis="x", alpha=0.25)
     ax.legend(title="Operating threshold", loc="lower right")
     logger.info("Rendered NTEE classified-count plot with %d groups", len(frame))
@@ -721,10 +710,6 @@ def ntee_classified_share_vs_corrected_estimate(
 
     ax.set_yticks(y, labels=frame["label"].to_list())
     ax.set_xlabel("Share")
-    ax.set_title(
-        f"Classified share against corrected prevalence estimate, "
-        f"by NTEE major group, {_UNIVERSE}",
-    )
     ax.grid(axis="x", alpha=0.25)
     handles, legend_labels = ax.get_legend_handles_labels()
     deduped = dict(zip(legend_labels, handles, strict=True))
